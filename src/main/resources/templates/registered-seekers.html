@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registered seekers</title>
+</head>
+<body>
+    <div>
+        <h1>Registered seekers</h1>
+    </div>
+
+    <table border="1">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Status</th>
+            <th>Start/Stop</th>
+            <th>Changes</th>
+            <th>Remove</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!--/*@thymesVar id="contests" type="my.maryvk.maryvkweb.seeker.MarySeeker[]"*/-->
+        <tr th:each="seeker:${seekers}">
+            <td th:text="${seeker.userId}">12345</td>
+            <td th:text="${seeker.status}">running</td>
+            <td><a href="#" th:href="@{/seekers/__${seeker.userId}__/__${seeker.changeStateStr()}__}"
+                   th:text="${seeker.changeStateStr()}">stop</a></td>
+            <td><a href="#" th:href="@{/seekers/__${seeker.userId}__/changes}">changes</a></td>
+            <td><a href="#" th:href="@{/seekers/__${seeker.userId}__/remove}">remove</a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="#" th:href="@{/seekers/all-changes}">All changes</a>
+
+    <!--/*@thymesVar id="newSeeker" type="my.maryvk.maryvkweb.domain.RegisteredSeeker"*/-->
+    <form method="post" th:action="@{/seekers/register}" th:object="${newSeeker}">
+        <label for="newSeeker">New id to seek: </label>
+        <input id="newSeeker" type="text" th:field="*{targetId}"/>
+        <input type="submit" value="Register"/>
+    </form>
+</body>
+</html>

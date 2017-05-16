@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${'Changes for '+__${userId}__}">Changes for ploadyfree</title>
+</head>
+<body>
+<div>
+    <h1 th:text="${'Changes for '+__${userId}__}">Changes for ploadyfree</h1>
+</div>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Time</th>
+        <th>Owner id</th>
+        <th>Target id</th>
+        <th>Relation type</th>
+        <th>Is appeared</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!--/*@thymesVar id="contests" type="my.maryvk.maryvkweb.domain.RelationChange[]"*/-->
+    <tr th:each="change:${changes}">
+        <td th:text="${change.id}">1</td>
+        <td th:text="${change.time}">1 November 2014 11:10</td>
+        <td><a href="https://vk.com/ploadyfree" th:href="'https://vk.com/id'+__${change.ownerId}__" th:text="${change.ownerId}">ploadyfree</a></td>
+        <td><a href="https://vk.com/iddreams_3004" th:href="'https://vk.com/id'+__${change.targetId}__" th:text="${change.targetId}">iddreams_3004</a></td>
+        <td th:text="${change.relationType}">FRIEND</td>
+        <td th:text="${change.isAppeared ? 'appeared' : 'disappeared'}">appeared</td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
