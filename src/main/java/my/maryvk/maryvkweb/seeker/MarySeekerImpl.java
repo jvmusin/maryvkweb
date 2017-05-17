@@ -1,13 +1,17 @@
 package my.maryvk.maryvkweb.seeker;
 
+import lombok.extern.java.Log;
 import my.maryvk.maryvkweb.domain.Relation;
 import my.maryvk.maryvkweb.domain.RelationType;
 import my.maryvk.maryvkweb.service.RelationService;
 import my.maryvk.maryvkweb.service.VkService;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.ListUtils;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Log
 public class MarySeekerImpl implements MarySeeker {
 
     private final VkService vk;
@@ -35,17 +39,11 @@ public class MarySeekerImpl implements MarySeeker {
         if (curUsers == null)
             return;
 
-        List<Integer> appeared = getOnlyAppeared(wasUsers, curUsers);
-        List<Integer> disappeared = getOnlyAppeared(curUsers, wasUsers);
+        List<Integer> appeared = ListUtils.removeAll(curUsers, wasUsers);
+        List<Integer> disappeared = ListUtils.removeAll(wasUsers, curUsers);
 
         if (!appeared.isEmpty()) processAppeared(appeared);
         if (!disappeared.isEmpty()) processDisappeared(disappeared);
-    }
-
-    private List<Integer> getOnlyAppeared(List<Integer> source, List<Integer> toCheck) {
-        return toCheck.stream()
-                .filter(x -> !source.contains(x))
-                .collect(Collectors.toList());
     }
 
     private List<Integer> getWasUsers() {
@@ -57,17 +55,19 @@ public class MarySeekerImpl implements MarySeeker {
     }
 
     private void processAppeared(List<Integer> appeared) {
-        appeared.stream()
-                .map(this::createRelation)
-                .forEach(relationService::addRelation);
-        //todo: add logging
+        if (!appeared.isEmpty())
+            appeared.stream()
+                    .map(this::createRelation)
+                    .peek(r -> log.info("New relation appeared: " + r))
+                    .forEach(relationService::addRelation);
     }
 
     private void processDisappeared(List<Integer> disappeared) {
-        disappeared.stream()
-                .map(this::createRelation)
-                .forEach(relationService::removeRelation);
-        //todo: add logging
+        if (!disappeared.isEmpty())
+            disappeared.stream()
+                    .map(this::createRelation)
+                    .peek(r -> log.info("Relation disappeared: " + r))
+                    .forEach(relationService::removeRelation);
     }
 
     private Relation createRelation(int targetId) {

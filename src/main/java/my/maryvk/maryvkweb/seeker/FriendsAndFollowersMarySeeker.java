@@ -12,8 +12,8 @@ public class FriendsAndFollowersMarySeeker implements MarySeeker {
     private final int usedId;
 
     public FriendsAndFollowersMarySeeker(VkService vk, int userId, RelationService relationService) {
-        friendsMarySeeker = new MarySeekerImpl(vk, userId, RelationType.FRIEND, relationService);
-        followersMarySeeker = new MarySeekerImpl(vk, userId, RelationType.FOLLOWER, relationService);
+        this.friendsMarySeeker = new MarySeekerImpl(vk, userId, RelationType.FRIEND, relationService);
+        this.followersMarySeeker = new MarySeekerImpl(vk, userId, RelationType.FOLLOWER, relationService);
         this.usedId = userId;
     }
 

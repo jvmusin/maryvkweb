@@ -4,7 +4,6 @@ import lombok.extern.java.Log;
 import my.maryvk.maryvkweb.domain.RelationChange;
 import my.maryvk.maryvkweb.repository.RelationChangeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +22,6 @@ public class RelationChangeServiceImpl implements RelationChangeService {
     @Override
     public void registerChange(RelationChange relationChange) {
         relationChangeRepository.saveAndFlush(relationChange);
-        log.info("Relation changed: " + relationChange);
     }
 
     @Override
