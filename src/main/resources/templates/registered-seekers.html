@@ -21,7 +21,7 @@
         <tbody>
         <!--/*@thymesVar id="contests" type="my.maryvk.maryvkweb.seeker.MarySeeker[]"*/-->
         <tr th:each="seeker:${seekers}">
-            <td><a href="https://vk.com/iddreams_3004" th:href="${@vk.getUser(seeker.userId).link()}" th:text="${@vk.getUser(seeker.userId)}">iddreams_3004: Mary</a></td>
+            <td><a href="https://vk.com/iddreams_3004" th:href="${@vk.getUser(seeker.userId).link()}" th:text="${@vk.getUser(seeker.userId).fullName()}">iddreams_3004: Mary</a></td>
             <td th:text="${seeker.status}">running</td>
             <td><a href="#" th:href="@{/seekers/__${seeker.userId}__/__${seeker.changeStateStr()}__}"
                    th:text="${seeker.changeStateStr()}">stop</a></td>

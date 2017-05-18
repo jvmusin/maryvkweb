@@ -36,7 +36,8 @@ public class RegisteredSeekerServiceImpl implements RegisteredSeekerService {
     }
 
     private RegisteredSeeker create(Integer targetId) {
-        return RegisteredSeeker.builder().targetId(targetId).build();
+        return new RegisteredSeeker(null, targetId);
+//        RegisteredSeeker.builder().targetId(targetId).build();
     }
 
     @Override

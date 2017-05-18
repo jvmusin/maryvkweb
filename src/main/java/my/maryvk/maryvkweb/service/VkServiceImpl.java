@@ -88,11 +88,12 @@ public class VkServiceImpl implements VkService {
     }
 
     private User createUser(UserXtrCounters u) {
-        return User.builder()
-                .id(u.getId())
-                .firstName(u.getFirstName())
-                .lastName(u.getLastName())
-                .build();
+//        return User.builder()
+//                .id(u.getId())
+//                .firstName(u.getFirstName())
+//                .lastName(u.getLastName())
+//                .build();
+        return new User(u.getId(), u.getFirstName(), u.getLastName());
     }
 
     private final AtomicLong lastTimeApiUsed = new AtomicLong(0);

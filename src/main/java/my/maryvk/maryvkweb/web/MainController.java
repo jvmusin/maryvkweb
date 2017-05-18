@@ -2,6 +2,7 @@ package my.maryvk.maryvkweb.web;
 
 import lombok.extern.java.Log;
 import my.maryvk.maryvkweb.domain.RegisteredSeeker;
+import my.maryvk.maryvkweb.domain.RelationChange;
 import my.maryvk.maryvkweb.seeker.MarySeekerScheduler;
 import my.maryvk.maryvkweb.service.RegisteredSeekerService;
 import my.maryvk.maryvkweb.service.RelationChangeService;

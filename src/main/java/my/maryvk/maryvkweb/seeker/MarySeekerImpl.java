@@ -67,10 +67,6 @@ public class MarySeekerImpl implements MarySeeker {
     }
 
     private Relation createRelation(int targetId) {
-        return Relation.builder()
-                .ownerId(userId)
-                .targetId(targetId)
-                .relationType(relationType)
-                .build();
+        return new Relation(null, userId, targetId, relationType);
     }
 }
