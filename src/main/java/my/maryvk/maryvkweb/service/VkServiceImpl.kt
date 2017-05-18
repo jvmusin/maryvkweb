@@ -15,8 +15,7 @@ import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.locks.ReentrantLock
 import kotlin.streams.toList
 
-@Service("vk")
-class VkServiceImpl(private val vk: VkApiClient, private val owner: UserActor, private val userService: UserService, @param:Value("\${vk.api-call-delay}") private val apiCallRange: Int) : VkService {
+@Service("vk") class VkServiceImpl(private val vk: VkApiClient, private val owner: UserActor, private val userService: UserService, @param:Value("\${vk.api-call-delay}") private val apiCallRange: Int) : VkService {
 
     override fun getConnectedIds(userId: Int, relationType: RelationType): List<Int>? {
         val ids = if (relationType === RelationType.FRIEND) getFriendIds(userId) else getFollowerIds(userId)
@@ -28,7 +27,7 @@ class VkServiceImpl(private val vk: VkApiClient, private val owner: UserActor, p
 
     private fun getFriendIds(userId: Int?): List<Int>? {
         try {
-            return executeVkApiCall<List<Int>>({ vk.friends().get(owner).userId(userId!!).execute().items })
+            return executeVkApiCall { vk.friends().get(owner).userId(userId!!).execute().items }
         } catch (e: ApiException) {
 //            log.warning("Unable to execute friends: " + e.message)
             return null
@@ -41,7 +40,7 @@ class VkServiceImpl(private val vk: VkApiClient, private val owner: UserActor, p
 
     private fun getFollowerIds(userId: Int?): List<Int>? {
         try {
-            return executeVkApiCall<List<Int>>({ vk.users().getFollowers(owner).userId(userId!!).execute().items })
+            return executeVkApiCall { vk.users().getFollowers(owner).userId(userId!!).execute().items }
         } catch (e: ApiException) {
 //            log.warning("Unable to execute followers: " + e.message)
             return null

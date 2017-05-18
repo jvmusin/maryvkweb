@@ -7,8 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import java.util.stream.Collectors
 
-@Service
-class RelationServiceImpl
+@Service class RelationServiceImpl
 @Autowired constructor(private val relationRepository: RelationRepository, private val relationChangeService: RelationChangeService) : RelationService {
 
     override fun findAllFor(userId: Int, relationType: RelationType): List<Int> {

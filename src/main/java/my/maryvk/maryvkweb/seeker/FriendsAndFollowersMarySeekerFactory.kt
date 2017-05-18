@@ -9,6 +9,6 @@ import org.springframework.stereotype.Service
 class FriendsAndFollowersMarySeekerFactory
 @Autowired constructor(private val vk: VkService, private val relationService: RelationService) : MarySeekerFactory {
     override fun create(userId: Int): MarySeeker {
-        return FriendsAndFollowersMarySeeker(vk, userId, relationService)
+        return FriendsAndFollowersMarySeeker(vk = vk, userId = userId, relationService = relationService)
     }
 }

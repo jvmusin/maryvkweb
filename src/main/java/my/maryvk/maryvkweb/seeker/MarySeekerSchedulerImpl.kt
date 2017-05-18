@@ -8,8 +8,7 @@ import org.springframework.stereotype.Service
 import java.util.HashMap
 import java.util.concurrent.ScheduledFuture
 
-@Service
-class MarySeekerSchedulerImpl
+@Service class MarySeekerSchedulerImpl
 @Autowired constructor(private val marySeekerFactory: MarySeekerFactory) : MarySeekerScheduler {
 
     @Value("\${vk.default-period-to-seek}")

@@ -11,8 +11,8 @@ import org.apache.commons.collections4.ListUtils
 class MarySeekerImpl(private val vk: VkService, override val userId: Int, private val relationType: RelationType, private val relationService: RelationService) : MarySeeker {
 
     override fun seek() {
-        val wasUsers = getWasUsers()
         val curUsers = getCurUsers() ?: return
+        val wasUsers = getWasUsers()
 
         val appeared = ListUtils.removeAll(curUsers, wasUsers)
         val disappeared = ListUtils.removeAll(wasUsers, curUsers)
