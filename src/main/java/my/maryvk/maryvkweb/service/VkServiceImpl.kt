@@ -53,7 +53,7 @@ class VkServiceImpl(private val vk: VkApiClient, private val owner: UserActor, p
     }
 
     private fun tryUpdateUsers(ids: List<Int>): Boolean {
-        val toUpdate = ids.stream()
+        val toUpdate = ids
                 .filter { id -> !userService.exists(id) }
                 .toList()
         if (!toUpdate.isEmpty()) {

@@ -9,11 +9,11 @@ import java.util.HashMap
 import java.util.concurrent.ScheduledFuture
 
 @Service
-class MarySeekerSchedulerImpl @Autowired
-constructor(private val marySeekerFactory: MarySeekerFactory) : MarySeekerScheduler {
+class MarySeekerSchedulerImpl
+@Autowired constructor(private val marySeekerFactory: MarySeekerFactory) : MarySeekerScheduler {
 
     @Value("\${vk.default-period-to-seek}")
-    private val periodToSeek: Int = 0
+    private val periodToSeek: Long = 0
 
     private val taskScheduler: ThreadPoolTaskScheduler = ThreadPoolTaskScheduler()
     private val scheduledSeekers: MutableMap<Int, ScheduledFuture<*>>
@@ -27,7 +27,7 @@ constructor(private val marySeekerFactory: MarySeekerFactory) : MarySeekerSchedu
         if (isRunning(targetId))
             return
         val seeker = marySeekerFactory.create(targetId)
-        val task = taskScheduler.scheduleAtFixedRate({ seeker.seek() }, periodToSeek.toLong())
+        val task = taskScheduler.scheduleAtFixedRate({ seeker.seek() }, periodToSeek)
         scheduledSeekers.put(targetId, task)
     }
 

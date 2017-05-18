@@ -6,5 +6,5 @@ import org.springframework.transaction.annotation.Transactional
 
 interface RegisteredSeekerRepository : JpaRepository<RegisteredSeeker, Long> {
     @Transactional
-    fun deleteByTargetId(targetId: Int?)
+    fun deleteByTargetId(targetId: Int)
 }

@@ -6,11 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
-class FriendsAndFollowersMarySeekerFactory @Autowired
-constructor(private val vk: VkService, private val relationService: RelationService) : MarySeekerFactory {
-
+class FriendsAndFollowersMarySeekerFactory
+@Autowired constructor(private val vk: VkService, private val relationService: RelationService) : MarySeekerFactory {
     override fun create(userId: Int): MarySeeker {
         return FriendsAndFollowersMarySeeker(vk, userId, relationService)
     }
-
 }

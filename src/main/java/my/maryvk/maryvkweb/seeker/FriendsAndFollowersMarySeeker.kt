@@ -10,8 +10,8 @@ class FriendsAndFollowersMarySeeker(vk: VkService, override val userId: Int, rel
     private val followersMarySeeker: MarySeeker
 
     init {
-        this.friendsMarySeeker = MarySeekerImpl(vk, userId, RelationType.FRIEND, relationService)
-        this.followersMarySeeker = MarySeekerImpl(vk, userId, RelationType.FOLLOWER, relationService)
+        this.friendsMarySeeker = MarySeekerImpl(vk = vk, userId = userId, relationType = RelationType.FRIEND, relationService = relationService)
+        this.followersMarySeeker = MarySeekerImpl(vk = vk, userId = userId, relationType = RelationType.FOLLOWER, relationService = relationService)
     }
 
     override fun seek() {

@@ -6,8 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 
-@Service
-class UserServiceImpl
+@Service class UserServiceImpl
 @Autowired constructor(private val userRepository: UserRepository) : UserService {
 
     override fun exists(id: Int): Boolean {
