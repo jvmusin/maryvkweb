@@ -13,16 +13,19 @@ import java.util.List;
 public class RegisteredSeekerServiceImpl implements RegisteredSeekerService {
 
     private final RegisteredSeekerRepository registeredSeekerRepository;
+    private final VkService vk;
 
     @Autowired
-    public RegisteredSeekerServiceImpl(RegisteredSeekerRepository registeredSeekerRepository) {
+    public RegisteredSeekerServiceImpl(RegisteredSeekerRepository registeredSeekerRepository, VkService vk) {
         this.registeredSeekerRepository = registeredSeekerRepository;
+        this.vk = vk;
     }
 
     @Override
     public void register(Integer targetId) {
         RegisteredSeeker seeker = create(targetId);
         registeredSeekerRepository.saveAndFlush(seeker);
+        vk.getUser(targetId);   //pull user info
         log.info("Registered new seeker: " + seeker);
     }
 

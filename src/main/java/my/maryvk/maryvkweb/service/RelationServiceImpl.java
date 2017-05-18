@@ -47,7 +47,7 @@ public class RelationServiceImpl implements RelationService {
 
     @Override
     public void removeRelation(Relation relation) {
-        relationRepository.delete(relation);
+        relationRepository.deleteByOwnerIdAndTargetIdAndRelationType(relation.getOwnerId(), relation.getTargetId(), relation.getRelationType());
         relationChangeService.registerChange(relation.createRelationChange(false));
     }
 }

@@ -8,10 +8,10 @@
         <h1>Registered seekers</h1>
     </div>
 
-    <table border="1">
+    <table border="1" cellpadding="4" cellspacing="4">
         <thead>
         <tr>
-            <th>Id</th>
+            <th>User</th>
             <th>Status</th>
             <th>Start/Stop</th>
             <th>Changes</th>
@@ -21,7 +21,7 @@
         <tbody>
         <!--/*@thymesVar id="contests" type="my.maryvk.maryvkweb.seeker.MarySeeker[]"*/-->
         <tr th:each="seeker:${seekers}">
-            <td th:text="${seeker.userId}">12345</td>
+            <td><a href="https://vk.com/iddreams_3004" th:href="${@vk.getUser(seeker.userId).link()}" th:text="${@vk.getUser(seeker.userId)}">iddreams_3004: Mary</a></td>
             <td th:text="${seeker.status}">running</td>
             <td><a href="#" th:href="@{/seekers/__${seeker.userId}__/__${seeker.changeStateStr()}__}"
                    th:text="${seeker.changeStateStr()}">stop</a></td>

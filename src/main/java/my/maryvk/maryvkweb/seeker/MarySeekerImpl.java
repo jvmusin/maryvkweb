@@ -5,11 +5,9 @@ import my.maryvk.maryvkweb.domain.Relation;
 import my.maryvk.maryvkweb.domain.RelationType;
 import my.maryvk.maryvkweb.service.RelationService;
 import my.maryvk.maryvkweb.service.VkService;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.ListUtils;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Log
 public class MarySeekerImpl implements MarySeeker {
@@ -55,19 +53,17 @@ public class MarySeekerImpl implements MarySeeker {
     }
 
     private void processAppeared(List<Integer> appeared) {
-        if (!appeared.isEmpty())
-            appeared.stream()
-                    .map(this::createRelation)
-                    .peek(r -> log.info("New relation appeared: " + r))
-                    .forEach(relationService::addRelation);
+        appeared.stream()
+                .map(this::createRelation)
+                .peek(relationService::addRelation)
+                .forEach(r -> log.info("New relation appeared: " + r));
     }
 
     private void processDisappeared(List<Integer> disappeared) {
-        if (!disappeared.isEmpty())
-            disappeared.stream()
-                    .map(this::createRelation)
-                    .peek(r -> log.info("Relation disappeared: " + r))
-                    .forEach(relationService::removeRelation);
+        disappeared.stream()
+                .map(this::createRelation)
+                .peek(relationService::removeRelation)
+                .forEach(r -> log.info("Relation disappeared: " + r));
     }
 
     private Relation createRelation(int targetId) {
