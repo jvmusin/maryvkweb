@@ -6,14 +6,12 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity data class RelationChange(
-        @Id @GeneratedValue var id: Long?,
+        @Id @GeneratedValue var id: Long? = null,
 
-        var time: LocalDateTime?,
-        var ownerId: Int?,
-        var targetId: Int?,
+        var time: LocalDateTime? = null,
+        var ownerId: Int? = null,
+        var targetId: Int? = null,
 
-        var relationType: RelationType?,
-        var isAppeared: Boolean?
-) {
-    constructor() : this(null, null, null, null, null, null)
-}
+        var relationType: RelationType? = null,
+        var isAppeared: Boolean? = null
+)
