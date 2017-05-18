@@ -8,11 +8,17 @@ import com.vk.api.sdk.objects.users.UserXtrCounters;
 import lombok.extern.java.Log;
 import my.maryvk.maryvkweb.domain.RelationType;
 import my.maryvk.maryvkweb.domain.User;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Collectors;
+
+import static java.lang.System.currentTimeMillis;
 
 @Service("vk")
 @Log
@@ -23,36 +29,36 @@ public class VkServiceImpl implements VkService {
 
     private final UserService userService;
 
-    public VkServiceImpl(VkApiClient vk, UserActor owner, UserService userService) {
+    public VkServiceImpl(VkApiClient vk, UserActor owner, UserService userService, @Value("${vk.api-call-delay}") int apiCallRange) {
         this.vk = vk;
         this.owner = owner;
         this.userService = userService;
+        this.apiCallRange = apiCallRange;
     }
 
     @Override
     public List<Integer> getConnectedIds(Integer userId, RelationType relationType) {
         List<Integer> ids = relationType == RelationType.FRIEND ? getFriendIds(userId) : getFollowerIds(userId);
-        if (ids != null) {
+        if (ids != null)
             if (!tryUpdateUsers(ids))
                 return null;
-        }
         return ids;
     }
 
     private List<Integer> getFriendIds(Integer userId) {
         try {
-            return vk.friends().get(owner).userId(userId).execute().getItems();
+            return executeVkApiCall(() -> vk.friends().get(owner).userId(userId).execute().getItems());
         } catch (ApiException | ClientException e) {
-            log.warning("Unable to get friends: " + e.getMessage());
+            log.warning("Unable to execute friends: " + e.getMessage());
             return null;
         }
     }
 
     private List<Integer> getFollowerIds(Integer userId) {
         try {
-            return vk.users().getFollowers(owner).userId(userId).execute().getItems();
+            return executeVkApiCall(() -> vk.users().getFollowers(owner).userId(userId).execute().getItems());
         } catch (ApiException | ClientException e) {
-            log.warning("Unable to get followers: " + e.getMessage());
+            log.warning("Unable to execute followers: " + e.getMessage());
             return null;
         }
     }
@@ -73,10 +79,10 @@ public class VkServiceImpl implements VkService {
     private List<User> getUsersFromVk(List<Integer> ids) {
         try {
             List<String> idsStr = ids.stream().map(Object::toString).collect(Collectors.toList());
-            List<UserXtrCounters> vkUsers = vk.users().get(owner).userIds(idsStr).execute();
+            List<UserXtrCounters> vkUsers = executeVkApiCall(() -> vk.users().get(owner).userIds(idsStr).execute());
             return vkUsers.stream().map(this::createUser).collect(Collectors.toList());
         } catch (ApiException | ClientException e) {
-            log.warning("Unable to get users: " + e.getMessage());
+            log.warning("Unable to execute users: " + e.getMessage());
             return null;
         }
     }
@@ -89,6 +95,20 @@ public class VkServiceImpl implements VkService {
                 .build();
     }
 
+    private final AtomicLong lastTimeApiUsed = new AtomicLong(0);
+    private final Lock lock = new ReentrantLock(true);
+    private final int apiCallRange;
+    private <T> T executeVkApiCall(VkApiCall<T> fun) throws ApiException, ClientException {
+        lock.lock();
+        while (currentTimeMillis() - lastTimeApiUsed.get() < apiCallRange);
+        try {
+            return fun.execute();
+        } finally {
+            lastTimeApiUsed.set(currentTimeMillis());
+            lock.unlock();
+        }
+    }
+
     @Override
     public User getUser(Integer id) {
         User user = userService.findOne(id);
@@ -97,5 +117,9 @@ public class VkServiceImpl implements VkService {
             user = userService.findOne(id);
         }
         return user;
+    }
+
+    private interface VkApiCall<T> {
+        T execute() throws ApiException, ClientException;
     }
 }

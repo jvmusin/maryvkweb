@@ -25,7 +25,6 @@ public class RegisteredSeekerServiceImpl implements RegisteredSeekerService {
     public void register(Integer targetId) {
         RegisteredSeeker seeker = create(targetId);
         registeredSeekerRepository.saveAndFlush(seeker);
-        vk.getUser(targetId);   //pull user info
         log.info("Registered new seeker: " + seeker);
     }
 
