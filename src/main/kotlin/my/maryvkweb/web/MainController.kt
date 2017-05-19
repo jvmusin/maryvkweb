@@ -42,6 +42,14 @@ import org.springframework.web.bind.annotation.RequestMapping
         return REDIRECT_TO_SEEKERS
     }
 
+    @RequestMapping("/seekers/startAll")
+    fun startAll(): String {
+        registeredSeekerService.findAll()
+                .map { it.targetId!! }
+                .forEach(marySeekerScheduler::schedule)
+        return REDIRECT_TO_SEEKERS
+    }
+
     @RequestMapping("/seekers/{userId}/stop")
     fun stop(@PathVariable("userId") userId: Int): String {
         marySeekerScheduler.unschedule(userId)

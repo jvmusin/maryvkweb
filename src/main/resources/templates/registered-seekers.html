@@ -31,7 +31,8 @@
         </tbody>
     </table>
 
-    <a href="#" th:href="@{/seekers/all-changes}">All changes</a>
+    <a href="#" th:href="@{/seekers/all-changes}">All changes</a> <br>
+    <a href="#" th:href="@{/seekers/startAll}">Start all</a>
 
     <!--/*@thymesVar id="newSeeker" type="my.maryvk.maryvkweb.domain.RegisteredSeeker"*/-->
     <form method="post" th:action="@{/seekers/register}" th:object="${newSeeker}">
