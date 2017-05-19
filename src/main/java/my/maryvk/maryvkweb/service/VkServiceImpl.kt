@@ -4,7 +4,6 @@ import com.vk.api.sdk.client.VkApiClient
 import com.vk.api.sdk.client.actors.UserActor
 import com.vk.api.sdk.exceptions.ApiException
 import com.vk.api.sdk.exceptions.ClientException
-import com.vk.api.sdk.objects.users.UserXtrCounters
 import my.maryvk.maryvkweb.domain.RelationType
 import my.maryvk.maryvkweb.domain.User
 import org.springframework.beans.factory.annotation.Value
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service
 import java.lang.System.currentTimeMillis
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.locks.ReentrantLock
+import java.util.logging.Logger
 
 @Service("vk") class VkServiceImpl(
         private val vk: VkApiClient,
@@ -20,6 +20,10 @@ import java.util.concurrent.locks.ReentrantLock
         @Value("\${vk.api-call-delay}")
         private val apiCallRange: Int
 ) : VkService {
+
+    companion object {
+        private val log = Logger.getLogger(VkServiceImpl.toString())
+    }
 
     override fun getConnectedIds(userId: Int, relationType: RelationType): List<Int>? {
         val ids = if (relationType === RelationType.FRIEND) getFriendIds(userId) else getFollowerIds(userId)
@@ -33,10 +37,10 @@ import java.util.concurrent.locks.ReentrantLock
         try {
             return executeVkApiCall { vk.friends().get(owner).userId(userId!!).execute().items }
         } catch (e: ApiException) {
-//            log.warning("Unable to execute friends: " + e.message)
+            log.warning("Unable to execute friends: ${e.message}")
             return null
         } catch (e: ClientException) {
-//            log.warning("Unable to execute friends: " + e.message)
+            log.warning("Unable to execute friends: ${e.message}")
             return null
         }
 
@@ -46,19 +50,16 @@ import java.util.concurrent.locks.ReentrantLock
         try {
             return executeVkApiCall { vk.users().getFollowers(owner).userId(userId!!).execute().items }
         } catch (e: ApiException) {
-//            log.warning("Unable to execute followers: " + e.message)
+            log.warning("Unable to get followers: ${e.message}")
             return null
         } catch (e: ClientException) {
-//            log.warning("Unable to execute followers: " + e.message)
+            log.warning("Unable to get followers: ${e.message}")
             return null
         }
-
     }
 
     private fun tryUpdateUsers(ids: List<Int>): Boolean {
-        val toUpdate = ids
-                .filter { id -> !userService.exists(id) }
-                .toList()
+        val toUpdate = ids.filter { id -> !userService.exists(id) }
         if (!toUpdate.isEmpty()) {
             val usersFromVk = getUsersFromVk(toUpdate) ?: return false
             userService.save(usersFromVk)
@@ -70,19 +71,14 @@ import java.util.concurrent.locks.ReentrantLock
         try {
             val idsStr = ids.map { it.toString() }.toList()
             val vkUsers = executeVkApiCall { vk.users().get(owner).userIds(idsStr).execute() }
-            return vkUsers.map { createUser(it) }.toList()
+            return vkUsers.map { User(id = it.id, firstName = it.firstName, lastName = it.lastName) }.toList()
         } catch (e: ApiException) {
-//            log.warning("Unable to execute users: " + e.message)
+            log.warning("Unable to get users: ${e.message}")
             return null
         } catch (e: ClientException) {
-//            log.warning("Unable to execute users: " + e.message)
+            log.warning("Unable to get users: ${e.message}")
             return null
         }
-
-    }
-
-    private fun createUser(u: UserXtrCounters): User {
-        return User(id = u.id, firstName = u.firstName, lastName = u.lastName)
     }
 
     private val lastTimeApiUsed = AtomicLong(0)

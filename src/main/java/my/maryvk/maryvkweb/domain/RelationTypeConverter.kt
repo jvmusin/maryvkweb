@@ -5,12 +5,6 @@ import javax.persistence.Converter
 
 @Converter(autoApply = true)
 class RelationTypeConverter : AttributeConverter<RelationType, Int> {
-
-    override fun convertToDatabaseColumn(relationType: RelationType): Int {
-        return relationType.id
-    }
-
-    override fun convertToEntityAttribute(id: Int): RelationType {
-        return RelationType.get(id)
-    }
+    override fun convertToDatabaseColumn(relationType: RelationType) = relationType.id
+    override fun convertToEntityAttribute(id: Int) = RelationType.get(id)
 }

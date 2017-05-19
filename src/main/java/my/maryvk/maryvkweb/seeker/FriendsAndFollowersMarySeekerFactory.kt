@@ -10,7 +10,9 @@ class FriendsAndFollowersMarySeekerFactory(
         private val vk: VkService,
         private val relationService: RelationService
 ) : MarySeekerFactory {
-    override fun create(userId: Int): MarySeeker {
-        return FriendsAndFollowersMarySeeker(vk = vk, userId = userId, relationService = relationService)
-    }
+    override fun create(userId: Int) = FriendsAndFollowersMarySeeker(
+            vk = vk,
+            userId = userId,
+            relationService = relationService
+    )
 }
