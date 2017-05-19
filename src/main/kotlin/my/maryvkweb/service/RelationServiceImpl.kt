@@ -27,7 +27,7 @@ import java.time.LocalDateTime
         relationRepository.deleteByOwnerIdAndTargetIdAndRelationType(relation.ownerId!!, relation.targetId!!, relation.relationType!!)
         relationChangeService.registerChange(relation.createRelationChange(isAppeared = false))
     }
-    
+
     private fun Relation.createRelationChange(isAppeared: Boolean): RelationChange {
         return RelationChange(
                 time = LocalDateTime.now(),

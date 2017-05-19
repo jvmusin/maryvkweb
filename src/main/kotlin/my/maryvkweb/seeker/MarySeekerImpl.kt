@@ -48,7 +48,6 @@ class MarySeekerImpl(
 
     private fun createRelation(targetId: Int): Relation {
         return Relation(
-                id = null,
                 ownerId = userId,
                 targetId = targetId,
                 relationType = relationType)

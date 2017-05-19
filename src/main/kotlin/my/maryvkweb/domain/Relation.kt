@@ -1,6 +1,5 @@
 package my.maryvkweb.domain
 
-import java.time.LocalDateTime
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
@@ -11,7 +10,4 @@ import javax.persistence.Id
         var ownerId: Int? = null,
         var targetId: Int? = null,
         var relationType: RelationType? = null
-) {
-//    fun createRelationChange(isAppeared: Boolean) =
-//            RelationChange(null, LocalDateTime.now(), ownerId, targetId, relationType, isAppeared)
-}
+)
