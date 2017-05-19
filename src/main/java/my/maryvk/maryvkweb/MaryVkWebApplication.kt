@@ -36,10 +36,8 @@ open class MaryVkWebApplication {
         engine.setTemplateResolver(templateResolver)
         return engine
     }
+}
 
-    companion object {
-        @JvmStatic fun main(args: Array<String>) {
-            SpringApplication.run(MaryVkWebApplication::class.java, *args)
-        }
-    }
+fun main(args: Array<String>) {
+    SpringApplication.run(MaryVkWebApplication::class.java, *args)
 }

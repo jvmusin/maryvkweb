@@ -56,16 +56,16 @@ import org.springframework.web.bind.annotation.RequestMapping
         return REDIRECT_TO_SEEKERS
     }
 
-    @RequestMapping("/seekers/{userId}/changes")
-    fun changes(model: Model, @PathVariable("userId") userId: Int): String {
-        model.addAttribute("changes", relationChangeService.findAllByOwnerIdOrderByTimeDesc(userId))
-        return VIEWS_CHANGES
-    }
-
     @RequestMapping("/seekers/register")
     fun register(@ModelAttribute(value = "newSeeker") newSeeker: RegisteredSeeker): String {
         registeredSeekerService.register(newSeeker.targetId!!)
         return REDIRECT_TO_SEEKERS
+    }
+
+    @RequestMapping("/seekers/{userId}/changes")
+    fun changes(model: Model, @PathVariable("userId") userId: Int): String {
+        model.addAttribute("changes", relationChangeService.findAllByOwnerIdOrderByTimeDesc(userId))
+        return VIEWS_CHANGES
     }
 
     @RequestMapping("/seekers/all-changes")
