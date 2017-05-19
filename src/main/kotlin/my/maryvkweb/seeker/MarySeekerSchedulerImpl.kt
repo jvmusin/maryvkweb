@@ -25,7 +25,7 @@ import java.util.concurrent.ScheduledFuture
         if (isRunning(targetId))
             return
         val seeker = marySeekerFactory.create(targetId)
-        val task = taskScheduler.scheduleAtFixedRate({ seeker.seek() }, periodToSeek)
+        val task = taskScheduler.scheduleAtFixedRate(seeker::seek, periodToSeek)
         scheduledSeekers.put(targetId, task)
     }
 

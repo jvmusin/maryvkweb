@@ -12,6 +12,6 @@ import javax.persistence.Id
         var targetId: Int? = null,
         var relationType: RelationType? = null
 ) {
-    fun createRelationChange(isAppeared: Boolean) =
-            RelationChange(null, LocalDateTime.now(), ownerId, targetId, relationType, isAppeared)
+//    fun createRelationChange(isAppeared: Boolean) =
+//            RelationChange(null, LocalDateTime.now(), ownerId, targetId, relationType, isAppeared)
 }

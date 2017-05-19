@@ -69,7 +69,7 @@ import java.util.logging.Logger
 
     private fun getUsersFromVk(ids: List<Int>): List<User>? {
         try {
-            val idsStr = ids.map { it.toString() }.toList()
+            val idsStr = ids.map(Any::toString).toList()
             val vkUsers = executeVkApiCall { vk.users().get(owner).userIds(idsStr).execute() }
             return vkUsers.map { User(id = it.id, firstName = it.firstName, lastName = it.lastName) }.toList()
         } catch (e: ApiException) {
