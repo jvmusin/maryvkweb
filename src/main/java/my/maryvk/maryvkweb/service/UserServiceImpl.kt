@@ -2,12 +2,12 @@ package my.maryvk.maryvkweb.service
 
 import my.maryvk.maryvkweb.domain.User
 import my.maryvk.maryvkweb.repository.UserRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 
-@Service open class UserServiceImpl
-@Autowired constructor(private val userRepository: UserRepository) : UserService {
+@Service open class UserServiceImpl(
+        private val userRepository: UserRepository
+) : UserService {
 
     override fun exists(id: Int): Boolean {
         return userRepository.exists(id)

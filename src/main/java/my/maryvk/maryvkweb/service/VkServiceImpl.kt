@@ -5,7 +5,6 @@ import com.vk.api.sdk.client.actors.UserActor
 import com.vk.api.sdk.exceptions.ApiException
 import com.vk.api.sdk.exceptions.ClientException
 import com.vk.api.sdk.objects.users.UserXtrCounters
-import lombok.extern.java.Log
 import my.maryvk.maryvkweb.domain.RelationType
 import my.maryvk.maryvkweb.domain.User
 import org.springframework.beans.factory.annotation.Value
@@ -13,9 +12,14 @@ import org.springframework.stereotype.Service
 import java.lang.System.currentTimeMillis
 import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.locks.ReentrantLock
-import kotlin.streams.toList
 
-@Service("vk") class VkServiceImpl(private val vk: VkApiClient, private val owner: UserActor, private val userService: UserService, @param:Value("\${vk.api-call-delay}") private val apiCallRange: Int) : VkService {
+@Service("vk") class VkServiceImpl(
+        private val vk: VkApiClient,
+        private val owner: UserActor,
+        private val userService: UserService,
+        @Value("\${vk.api-call-delay}")
+        private val apiCallRange: Int
+) : VkService {
 
     override fun getConnectedIds(userId: Int, relationType: RelationType): List<Int>? {
         val ids = if (relationType === RelationType.FRIEND) getFriendIds(userId) else getFollowerIds(userId)

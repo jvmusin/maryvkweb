@@ -6,7 +6,8 @@ import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
 @Entity data class RelationChange(
-        @Id @GeneratedValue var id: Long? = null,
+        @Id @GeneratedValue
+        var id: Long? = null,
 
         var time: LocalDateTime? = null,
         var ownerId: Int? = null,

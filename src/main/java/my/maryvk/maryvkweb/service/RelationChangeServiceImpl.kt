@@ -2,11 +2,11 @@ package my.maryvk.maryvkweb.service
 
 import my.maryvk.maryvkweb.domain.RelationChange
 import my.maryvk.maryvkweb.repository.RelationChangeRepository
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
-@Service class RelationChangeServiceImpl
-@Autowired constructor(private val relationChangeRepository: RelationChangeRepository) : RelationChangeService {
+@Service class RelationChangeServiceImpl(
+        private val relationChangeRepository: RelationChangeRepository
+) : RelationChangeService {
 
     override fun registerChange(relationChange: RelationChange) {
         relationChangeRepository.saveAndFlush(relationChange)

@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 
-@Controller class MainController
-@Autowired constructor(private val marySeekerScheduler: MarySeekerScheduler, private val relationChangeService: RelationChangeService, private val registeredSeekerService: RegisteredSeekerService) {
+@Controller class MainController(
+        private val marySeekerScheduler: MarySeekerScheduler,
+        private val relationChangeService: RelationChangeService,
+        private val registeredSeekerService: RegisteredSeekerService
+) {
 
     companion object {
         private val VIEWS_REGISTERED_SEEKERS = "registered-seekers"
@@ -21,9 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping
     }
 
     @RequestMapping("/")
-    fun index(): String {
-        return REDIRECT_TO_SEEKERS
-    }
+    fun index() = REDIRECT_TO_SEEKERS
 
     @RequestMapping("/seekers")
     fun registeredSeekers(model: Model): String {

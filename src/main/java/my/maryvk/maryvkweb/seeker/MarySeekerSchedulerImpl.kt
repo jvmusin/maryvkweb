@@ -1,15 +1,14 @@
 package my.maryvk.maryvkweb.seeker
 
-import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler
 import org.springframework.stereotype.Service
-
-import java.util.HashMap
+import java.util.*
 import java.util.concurrent.ScheduledFuture
 
-@Service class MarySeekerSchedulerImpl
-@Autowired constructor(private val marySeekerFactory: MarySeekerFactory) : MarySeekerScheduler {
+@Service class MarySeekerSchedulerImpl(
+        private val marySeekerFactory: MarySeekerFactory
+) : MarySeekerScheduler {
 
     @Value("\${vk.default-period-to-seek}")
     private val periodToSeek: Long = 0

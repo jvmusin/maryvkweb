@@ -4,7 +4,11 @@ import my.maryvk.maryvkweb.domain.RelationType
 import my.maryvk.maryvkweb.service.RelationService
 import my.maryvk.maryvkweb.service.VkService
 
-class FriendsAndFollowersMarySeeker(vk: VkService, override val userId: Int, relationService: RelationService) : MarySeeker {
+class FriendsAndFollowersMarySeeker(
+        vk: VkService,
+        override val userId: Int,
+        relationService: RelationService
+) : MarySeeker {
 
     private val friendsMarySeeker: MarySeeker
     private val followersMarySeeker: MarySeeker
