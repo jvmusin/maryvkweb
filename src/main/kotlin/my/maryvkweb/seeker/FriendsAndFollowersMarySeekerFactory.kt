@@ -4,8 +4,7 @@ import my.maryvkweb.service.RelationService
 import my.maryvkweb.service.VkService
 import org.springframework.stereotype.Service
 
-@Service
-class FriendsAndFollowersMarySeekerFactory(
+@Service class FriendsAndFollowersMarySeekerFactory(
         private val vk: VkService,
         private val relationService: RelationService
 ) : MarySeekerFactory {

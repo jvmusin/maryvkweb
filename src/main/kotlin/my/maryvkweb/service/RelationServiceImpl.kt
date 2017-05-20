@@ -12,11 +12,10 @@ import java.time.LocalDateTime
         private val relationChangeService: RelationChangeService
 ) : RelationService {
 
-    override fun findAllFor(userId: Int, relationType: RelationType): List<Int> {
-        return relationRepository.findAllByOwnerIdAndRelationTypeOrderByTargetId(userId, relationType)
-                .map { it.targetId!! }
-                .toList()
-    }
+    override fun findAllFor(userId: Int, relationType: RelationType) =
+            relationRepository
+                    .findAllByOwnerIdAndRelationTypeOrderByTargetId(userId, relationType)
+                    .map { it.targetId!! }
 
     override fun addRelation(relation: Relation) {
         relationRepository.saveAndFlush(relation)
@@ -28,12 +27,11 @@ import java.time.LocalDateTime
         relationChangeService.registerChange(relation.createRelationChange(isAppeared = false))
     }
 
-    private fun Relation.createRelationChange(isAppeared: Boolean): RelationChange {
-        return RelationChange(
-                time = LocalDateTime.now(),
-                ownerId = ownerId,
-                targetId = targetId,
-                relationType = relationType,
-                isAppeared = isAppeared)
-    }
+    private fun Relation.createRelationChange(isAppeared: Boolean) = RelationChange(
+            time = LocalDateTime.now(),
+            ownerId = ownerId,
+            targetId = targetId,
+            relationType = relationType,
+            isAppeared = isAppeared
+    )
 }

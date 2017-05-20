@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping
         private val registeredSeekerService: RegisteredSeekerService
 ) {
 
-    companion object {
+    private companion object Views {
         private val VIEWS_REGISTERED_SEEKERS = "registered-seekers"
         private val VIEWS_CHANGES = "changes"
         private val REDIRECT_TO_SEEKERS = "redirect:/seekers"
@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestMapping
         val seekers = registeredSeekerService.findAll()
                 .map { it.targetId!! }
                 .map { id -> SeekerStatus(id, marySeekerScheduler.isRunning(id)) }
-                .toList()
         model.addAttribute("seekers", seekers)
         model.addAttribute("newSeeker", RegisteredSeeker())
         return VIEWS_REGISTERED_SEEKERS
@@ -46,7 +45,8 @@ import org.springframework.web.bind.annotation.RequestMapping
     fun startAll(): String {
         registeredSeekerService.findAll()
                 .map { it.targetId!! }
-                .forEach(marySeekerScheduler::schedule)
+                .filterNot(marySeekerScheduler::isRunning)
+                .forEach { this.start(it) }
         return REDIRECT_TO_SEEKERS
     }
 
@@ -75,7 +75,7 @@ import org.springframework.web.bind.annotation.RequestMapping
         return VIEWS_CHANGES
     }
 
-    @RequestMapping("/seekers/all-changes")
+    @RequestMapping("/seekers/allChanges")
     fun allChanges(model: Model): String {
         model.addAttribute("changes", relationChangeService.findAllOrderByTimeDesc())
         return VIEWS_CHANGES

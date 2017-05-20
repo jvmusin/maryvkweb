@@ -1,17 +1,15 @@
 package my.maryvkweb.service
 
+import my.maryvkweb.LoggerDelegate
 import my.maryvkweb.domain.RegisteredSeeker
 import my.maryvkweb.repository.RegisteredSeekerRepository
 import org.springframework.stereotype.Service
-import java.util.logging.Logger
 
 @Service class RegisteredSeekerServiceImpl(
         private val registeredSeekerRepository: RegisteredSeekerRepository
 ) : RegisteredSeekerService {
 
-    companion object {
-        private val log = Logger.getLogger(RegisteredSeekerServiceImpl.toString())
-    }
+    private val log by LoggerDelegate(RegisteredSeekerServiceImpl::class.java)
 
     override fun register(targetId: Int) {
         val seeker = RegisteredSeeker(targetId = targetId)
@@ -25,7 +23,5 @@ import java.util.logging.Logger
         log.info("Unregistered seeker: " + seeker)
     }
 
-    override fun findAll(): List<RegisteredSeeker> {
-        return registeredSeekerRepository.findAll()
-    }
+    override fun findAll(): List<RegisteredSeeker> = registeredSeekerRepository.findAll()
 }

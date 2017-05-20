@@ -20,14 +20,11 @@ import org.thymeleaf.templateresolver.ITemplateResolver
 open class MaryVkWebApplication {
 
     @Bean
-    open fun vkApiClient(): VkApiClient {
-        return VkApiClient(HttpTransportClient.getInstance())
-    }
+    open fun vkApiClient() = VkApiClient(HttpTransportClient.getInstance())
 
     @Bean
-    open fun owner(@Value("\${vk.owner-id}") ownerId: Int, @Value("\${vk.access-token}") accessToken: String): UserActor {
-        return UserActor(ownerId, accessToken)
-    }
+    open fun owner(@Value("\${vk.owner-id}") ownerId: Int, @Value("\${vk.access-token}") accessToken: String)
+            = UserActor(ownerId, accessToken)
 
     @Bean
     open fun templateEngine(templateResolver: ITemplateResolver): TemplateEngine {

@@ -1,0 +1,20 @@
+vk:
+  owner-id: 39666902
+  access-token: e70ea15c4102b9c6ae25455de24497bc575391e34c2cb82bc5a595efcb4faf8faa89123f6e6aec1997ca0
+  default-period-to-seek: 120000
+  api-call-delay: 400
+
+spring:
+  jackson:
+    serialization:
+      write_dates_as_timestamps:
+        false
+  jpa:
+#    show-sql: true
+    hibernate:
+      ddl-auto: none
+      use-new-id-generator-mappings: false
+  datasource:
+    url: jdbc:mysql://localhost:3306/maryvk
+    username: root
+    password: root

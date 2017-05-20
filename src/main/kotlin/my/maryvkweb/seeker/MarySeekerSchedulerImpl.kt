@@ -1,5 +1,6 @@
 package my.maryvkweb.seeker
 
+import my.maryvkweb.LoggerDelegate
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler
 import org.springframework.stereotype.Service
@@ -9,6 +10,8 @@ import java.util.concurrent.ScheduledFuture
 @Service class MarySeekerSchedulerImpl(
         private val marySeekerFactory: MarySeekerFactory
 ) : MarySeekerScheduler {
+
+    private val log by LoggerDelegate(MarySeekerSchedulerImpl::class.java)
 
     @Value("\${vk.default-period-to-seek}")
     private val periodToSeek: Long = 0
@@ -22,20 +25,24 @@ import java.util.concurrent.ScheduledFuture
     }
 
     override fun schedule(targetId: Int) {
-        if (isRunning(targetId))
+        if (isRunning(targetId)) {
+            log.info("Failed to schedule for $targetId: Already running")
             return
+        }
         val seeker = marySeekerFactory.create(targetId)
         val task = taskScheduler.scheduleAtFixedRate(seeker::seek, periodToSeek)
         scheduledSeekers.put(targetId, task)
+        log.info("Scheduled seeker for $targetId")
     }
 
     override fun unschedule(targetId: Int) {
-        if (!isRunning(targetId))
+        if (!isRunning(targetId)) {
+            log.info("Failed to unschedule for $targetId: Not running yet")
             return
+        }
         scheduledSeekers.remove(targetId)?.cancel(true)
+        log.info("Unscheduled seeker for $targetId")
     }
 
-    override fun isRunning(targetId: Int): Boolean {
-        return scheduledSeekers.containsKey(targetId)
-    }
+    override fun isRunning(targetId: Int) = scheduledSeekers.containsKey(targetId)
 }

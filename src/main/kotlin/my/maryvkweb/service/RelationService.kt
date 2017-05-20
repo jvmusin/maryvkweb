@@ -1,6 +1,7 @@
 package my.maryvkweb.service
 
 import my.maryvkweb.domain.Relation
+import my.maryvkweb.domain.RelationChange
 import my.maryvkweb.domain.RelationType
 
 interface RelationService {
