@@ -66,10 +66,11 @@ import java.util.concurrent.locks.ReentrantLock
     }
 
     private fun getUsersFromVk(ids: List<Int>): List<User>? {
+        fun UserXtrCounters.toUser() = User(id = id, firstName = firstName, lastName = lastName)
         try {
             val idsStr = ids.map(Any::toString)
-            return executeVkApiCall { vk.users().get(owner).userIds(idsStr).execute() }
-                    .map { User(id = it.id, firstName = it.firstName, lastName = it.lastName) }
+            val vkUsers = executeVkApiCall { vk.users().get(owner).userIds(idsStr).execute() }
+            return vkUsers.map(UserXtrCounters::toUser)
         } catch (e: ApiException) {
             log.warning("Unable to get users: ${e.message}")
             return null

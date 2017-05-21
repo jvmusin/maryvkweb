@@ -27,11 +27,11 @@ import org.springframework.web.bind.annotation.RequestMapping
 
     @RequestMapping("/seekers")
     fun registeredSeekers(model: Model): String {
+        fun createStatus(targetId: Int)
+                = SeekerStatus(targetId, marySeekerScheduler.isRunning(targetId))
+
         val seekers = registeredSeekerService.findAll()
-                .map { user ->
-                    val targetId = user.targetId!!
-                    SeekerStatus(targetId, marySeekerScheduler.isRunning(targetId))
-                }
+                .map { seeker -> createStatus(seeker.targetId!!) }
         model.addAttribute("seekers", seekers)
         model.addAttribute("newSeeker", RegisteredSeeker())
         return VIEWS_REGISTERED_SEEKERS
