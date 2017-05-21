@@ -11,15 +11,15 @@ import org.springframework.stereotype.Service
 
     private val log = getLogger<RegisteredSeekerServiceImpl>()
 
-    override fun register(targetId: Int) {
-        val seeker = RegisteredSeeker(targetId = targetId)
+    override fun register(connectedId: Int) {
+        val seeker = RegisteredSeeker(connectedId = connectedId)
         registeredSeekerRepository.saveAndFlush(seeker)
         log.info("Registered new seeker: " + seeker)
     }
 
-    override fun unregister(targetId: Int) {
-        val seeker = RegisteredSeeker(targetId = targetId)
-        registeredSeekerRepository.deleteByTargetId(targetId)
+    override fun unregister(connectedId: Int) {
+        val seeker = RegisteredSeeker(connectedId = connectedId)
+        registeredSeekerRepository.deleteByConnectedId(connectedId)
         log.info("Unregistered seeker: " + seeker)
     }
 

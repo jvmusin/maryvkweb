@@ -7,8 +7,8 @@ import my.maryvkweb.service.RelationService
 import my.maryvkweb.service.VkService
 
 class MarySeekerImpl(
+        override val connectedId: Int,
         private val vk: VkService,
-        override val userId: Int,
         private val relationType: RelationType,
         private val relationService: RelationService
 ) : MarySeeker {
@@ -26,29 +26,27 @@ class MarySeekerImpl(
         if (!disappeared.isEmpty()) processDisappeared(disappeared)
     }
 
-    private fun getWasUsers() = relationService.findAllFor(userId, relationType)
-    private fun getCurUsers() = vk.getConnectedIds(userId, relationType)
+    private fun getWasUsers() = relationService.findAllFor(connectedId, relationType)
+    private fun getCurUsers() = vk.getConnectedIds(connectedId, relationType)
 
+    //make it faster by batch
     private fun processAppeared(appeared: List<Int>) =
-            appeared.asSequence()
-                    .map(this::createRelation)
-                    .forEach { rel ->
-                        relationService.addRelation(rel)
-                        log.info("New relation appeared: " + rel)
-                    }
+            appeared.forEach { targetId ->
+                val rel = createRelation(targetId)
+                relationService.addRelation(rel)
+                log.info("New relation appeared: " + rel)
+            }
 
     private fun processDisappeared(disappeared: List<Int>) =
-            disappeared.asSequence()
-                    .map(this::createRelation)
-                    .forEach { rel ->
-                        relationService.removeRelation(rel)
-                        log.info("Relation disappeared: " + rel)
-                    }
+            disappeared.forEach { targetId ->
+                val rel = createRelation(targetId)
+                relationService.removeRelation(rel)
+                log.info("Relation disappeared: " + rel)
+            }
 
-    private fun createRelation(targetId: Int) =
-            Relation(
-                    ownerId = userId,
-                    targetId = targetId,
-                    relationType = relationType
-            )
+    private fun createRelation(targetId: Int) = Relation(
+            connectedId = connectedId,
+            targetId = targetId,
+            relationType = relationType
+    )
 }

@@ -1,8 +1,19 @@
 vk:
-  owner-id: 39666902
-  access-token: e70ea15c4102b9c6ae25455de24497bc575391e34c2cb82bc5a595efcb4faf8faa89123f6e6aec1997ca0
+  #app data
+  client-id: 5992417
+  client-secret: cdVwYmloEM9v4p4bL43p
+  api-version: 5.52
+  #additional data
   default-period-to-seek: 120000
   api-call-delay: 400
+  #auth only
+  display: page
+  redirect-uri: http://maryvk.cfapps.io/doAuth
+  scope: offline
+  response-type: code
+  #local only
+  owner-id: 39666902
+  access-token: 96aa7fe7cfa77c04aea8d67950534163bcc6806e0fc75167aef7c5897d93d7b4d85fd79b7368a1f7b597e
 
 spring:
   jackson:

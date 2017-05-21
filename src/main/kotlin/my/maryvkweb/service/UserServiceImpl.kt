@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service
         private val userRepository: UserRepository
 ) : UserService {
 
-    override fun exists(id: Int): Boolean = userRepository.existsById(id)
+    override fun exists(userId: Int): Boolean = userRepository.existsById(userId)
 
     @Cacheable(cacheNames = arrayOf("users"), unless = "#result == null")
-    override fun findOne(id: Int): User? = userRepository.findById(id).orElse(null)
+    override fun find(userId: Int): User? = userRepository.findById(userId).orElse(null)
 
     override fun saveAll(users: Iterable<User>): List<User> = userRepository.saveAll(users)
 

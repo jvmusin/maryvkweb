@@ -1,6 +1,6 @@
 package my.maryvkweb.seeker
 
 interface MarySeeker {
-    val userId: Int
+    val connectedId: Int
     fun seek()
 }

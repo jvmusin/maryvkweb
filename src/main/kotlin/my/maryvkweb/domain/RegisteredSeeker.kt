@@ -8,5 +8,5 @@ import javax.persistence.Id
         @Id @GeneratedValue
         var id: Long? = null,
 
-        var targetId: Int? = null
+        var connectedId: Int? = null
 )

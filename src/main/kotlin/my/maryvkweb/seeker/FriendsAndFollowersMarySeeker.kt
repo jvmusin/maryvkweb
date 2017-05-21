@@ -5,8 +5,8 @@ import my.maryvkweb.service.RelationService
 import my.maryvkweb.service.VkService
 
 class FriendsAndFollowersMarySeeker(
+        override val connectedId: Int,
         vk: VkService,
-        override val userId: Int,
         relationService: RelationService
 ) : MarySeeker {
 
@@ -14,8 +14,14 @@ class FriendsAndFollowersMarySeeker(
     private val followersMarySeeker: MarySeeker
 
     init {
-        this.friendsMarySeeker = MarySeekerImpl(vk = vk, userId = userId, relationType = RelationType.FRIEND, relationService = relationService)
-        this.followersMarySeeker = MarySeekerImpl(vk = vk, userId = userId, relationType = RelationType.FOLLOWER, relationService = relationService)
+        fun createSeeker(relationType: RelationType) = MarySeekerImpl(
+                vk = vk,
+                connectedId = connectedId,
+                relationType = relationType,
+                relationService = relationService
+        )
+        this.friendsMarySeeker = createSeeker(RelationType.FRIEND)
+        this.followersMarySeeker = createSeeker(RelationType.FOLLOWER)
     }
 
     override fun seek() {

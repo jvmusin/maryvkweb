@@ -8,7 +8,7 @@ import javax.persistence.Id
         @Id @GeneratedValue
         var id: Long? = null,
 
-        var ownerId: Int? = null,
+        var connectedId: Int? = null,
         var targetId: Int? = null,
 
         var relationType: RelationType? = null

@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.transaction.annotation.Transactional
 
 interface RelationRepository : JpaRepository<Relation, Long> {
-    fun findAllByOwnerIdAndRelationTypeOrderByTargetId(ownerId: Int, relationType: RelationType): List<Relation>
+    fun findAllByConnectedIdAndRelationTypeOrderByTargetId(connectedId: Int, relationType: RelationType): List<Relation>
     @Transactional
-    fun deleteByOwnerIdAndTargetIdAndRelationType(ownerId: Int, targetId: Int, relationType: RelationType)
+    fun deleteByConnectedIdAndTargetIdAndRelationType(connectedId: Int, targetId: Int, relationType: RelationType)
 }

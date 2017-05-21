@@ -10,7 +10,7 @@ import javax.persistence.Id
         var id: Long? = null,
 
         var time: LocalDateTime? = null,
-        var ownerId: Int? = null,
+        var connectedId: Int? = null,
         var targetId: Int? = null,
 
         var relationType: RelationType? = null,

@@ -19,14 +19,14 @@
         </tr>
         </thead>
         <tbody>
-        <!--/*@thymesVar id="contests" type="my.maryvk.maryvkweb.seeker.MarySeeker[]"*/-->
+        <!--/*@thymesVar id="seekers" type="my.maryvkweb.seeker.MarySeeker[]"*/-->
         <tr th:each="seeker:${seekers}">
-            <td><a href="https://vk.com/iddreams_3004" th:href="${@vk.getUser(seeker.userId).link()}" th:text="${@vk.getUser(seeker.userId).fullName()}">iddreams_3004: Mary</a></td>
+            <td><a href="https://vk.com/iddreams_3004" th:href="${@vk.getUser(seeker.targetId).link()}" th:text="${@vk.getUser(seeker.targetId).fullName()}">iddreams_3004: Mary</a></td>
             <td th:text="${seeker.status}">running</td>
-            <td><a href="#" th:href="@{/seekers/__${seeker.userId}__/__${seeker.changeStateStr()}__}"
+            <td><a href="#" th:href="@{/seekers/__${seeker.targetId}__/__${seeker.changeStateStr()}__}"
                    th:text="${seeker.changeStateStr()}">stop</a></td>
-            <td><a href="#" th:href="@{/seekers/__${seeker.userId}__/changes}">changes</a></td>
-            <td><a href="#" th:href="@{/seekers/__${seeker.userId}__/remove}">remove</a></td>
+            <td><a href="#" th:href="@{/seekers/__${seeker.targetId}__/changes}">changes</a></td>
+            <td><a href="#" th:href="@{/seekers/__${seeker.targetId}__/remove}">remove</a></td>
         </tr>
         </tbody>
     </table>
@@ -34,10 +34,10 @@
     <a href="#" th:href="@{/seekers/allChanges}">All changes</a> <br>
     <a href="#" th:href="@{/seekers/startAll}">Start all</a>
 
-    <!--/*@thymesVar id="newSeeker" type="my.maryvk.maryvkweb.domain.RegisteredSeeker"*/-->
+    <!--/*@thymesVar id="newSeeker" type="my.maryvkweb.domain.RegisteredSeeker"*/-->
     <form method="post" th:action="@{/seekers/register}" th:object="${newSeeker}">
         <label for="newSeeker">New id to seek: </label>
-        <input id="newSeeker" type="text" th:field="*{targetId}"/>
+        <input id="newSeeker" type="text" th:field="*{connectedId}"/>
         <input type="submit" value="Register"/>
     </form>
 </body>

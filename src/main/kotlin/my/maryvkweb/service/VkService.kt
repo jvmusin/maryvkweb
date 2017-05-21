@@ -5,5 +5,6 @@ import my.maryvkweb.domain.User
 
 interface VkService {
     fun getConnectedIds(userId: Int, relationType: RelationType): List<Int>?
-    fun getUser(id: Int): User?
+    fun getUser(userId: Int): User?
+    fun authorize(code: String)
 }

@@ -9,4 +9,6 @@ interface RelationService {
 
     fun addRelation(relation: Relation)
     fun removeRelation(relation: Relation)
+    fun addRelations(relations: List<Relation>)
+    fun removeRelations(relations: List<Relation>)
 }

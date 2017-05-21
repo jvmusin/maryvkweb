@@ -5,12 +5,12 @@ import my.maryvkweb.service.VkService
 import org.springframework.stereotype.Service
 
 @Service class FriendsAndFollowersMarySeekerFactory(
-        private val vk: VkService,
+        private val vkService: VkService,
         private val relationService: RelationService
 ) : MarySeekerFactory {
-    override fun create(userId: Int) = FriendsAndFollowersMarySeeker(
-            vk = vk,
-            userId = userId,
+    override fun create(connectedId: Int) = FriendsAndFollowersMarySeeker(
+            connectedId = connectedId,
+            vk = vkService,
             relationService = relationService
     )
 }

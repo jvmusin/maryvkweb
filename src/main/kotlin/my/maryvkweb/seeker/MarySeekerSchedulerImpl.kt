@@ -1,20 +1,20 @@
 package my.maryvkweb.seeker
 
+import my.maryvkweb.VkProperties
 import my.maryvkweb.getLogger
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler
 import org.springframework.stereotype.Service
 import java.util.*
 import java.util.concurrent.ScheduledFuture
 
 @Service class MarySeekerSchedulerImpl(
-        private val marySeekerFactory: MarySeekerFactory
+        private val marySeekerFactory: MarySeekerFactory,
+        vkProperties: VkProperties
 ) : MarySeekerScheduler {
 
     private val log = getLogger<MarySeekerSchedulerImpl>()
 
-    @Value("\${vk.default-period-to-seek}")
-    private val periodToSeek: Long = 0
+    private val periodToSeek = vkProperties.defaultPeriodToSeek
 
     private val taskScheduler: ThreadPoolTaskScheduler = ThreadPoolTaskScheduler()
     private val scheduledSeekers: MutableMap<Int, ScheduledFuture<*>>
@@ -24,25 +24,25 @@ import java.util.concurrent.ScheduledFuture
         scheduledSeekers = HashMap<Int, ScheduledFuture<*>>()
     }
 
-    override fun schedule(targetId: Int) {
-        if (isRunning(targetId)) {
-            log.info("Failed to schedule for $targetId: Already running")
+    override fun schedule(connectedId: Int) {
+        if (isRunning(connectedId)) {
+            log.info("Failed to schedule for $connectedId: Already running")
             return
         }
-        val seeker = marySeekerFactory.create(targetId)
+        val seeker = marySeekerFactory.create(connectedId)
         val task = taskScheduler.scheduleAtFixedRate(seeker::seek, periodToSeek)
-        scheduledSeekers.put(targetId, task)
-        log.info("Scheduled seeker for $targetId")
+        scheduledSeekers.put(connectedId, task)
+        log.info("Scheduled seeker for $connectedId")
     }
 
-    override fun unschedule(targetId: Int) {
-        if (!isRunning(targetId)) {
-            log.info("Failed to unschedule for $targetId: Not running yet")
+    override fun unschedule(connectedId: Int) {
+        if (!isRunning(connectedId)) {
+            log.info("Failed to unschedule for $connectedId: Not running yet")
             return
         }
-        scheduledSeekers.remove(targetId)?.cancel(true)
-        log.info("Unscheduled seeker for $targetId")
+        scheduledSeekers.remove(connectedId)?.cancel(true)
+        log.info("Unscheduled seeker for $connectedId")
     }
 
-    override fun isRunning(targetId: Int) = scheduledSeekers.containsKey(targetId)
+    override fun isRunning(connectedId: Int): Boolean = scheduledSeekers.containsKey(connectedId)
 }

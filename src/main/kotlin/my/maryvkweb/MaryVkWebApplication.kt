@@ -1,14 +1,14 @@
 package my.maryvkweb
 
 import com.vk.api.sdk.client.VkApiClient
-import com.vk.api.sdk.client.actors.UserActor
 import com.vk.api.sdk.httpclient.HttpTransportClient
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.web.client.RestTemplateBuilder
 import org.springframework.cache.annotation.EnableCaching
 import org.springframework.context.annotation.Bean
 import org.springframework.scheduling.annotation.EnableScheduling
+import org.springframework.web.client.RestTemplate
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect
 import org.thymeleaf.spring5.SpringTemplateEngine
@@ -18,13 +18,8 @@ import org.thymeleaf.templateresolver.ITemplateResolver
 @EnableScheduling
 @EnableCaching
 open class MaryVkWebApplication {
-
     @Bean
     open fun vkApiClient() = VkApiClient(HttpTransportClient.getInstance())
-
-    @Bean
-    open fun owner(@Value("\${vk.owner-id}") ownerId: Int, @Value("\${vk.access-token}") accessToken: String)
-            = UserActor(ownerId, accessToken)
 
     @Bean
     open fun templateEngine(templateResolver: ITemplateResolver): TemplateEngine {
@@ -32,6 +27,11 @@ open class MaryVkWebApplication {
         engine.addDialect(Java8TimeDialect())
         engine.setTemplateResolver(templateResolver)
         return engine
+    }
+
+    @Bean
+    open fun restTemplate(restTemplateBuilder: RestTemplateBuilder): RestTemplate {
+        return restTemplateBuilder.build()
     }
 }
 
