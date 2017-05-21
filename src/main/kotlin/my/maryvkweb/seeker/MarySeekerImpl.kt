@@ -30,15 +30,17 @@ class MarySeekerImpl(
     private fun getCurUsers() = vk.getConnectedIds(userId, relationType)
 
     private fun processAppeared(appeared: List<Int>) =
-            appeared.map(this::createRelation).forEach {
-                relationService.addRelation(it)
-                log.info("New relation appeared: " + it)
+            appeared.forEach { id ->
+                val rel = createRelation(id)
+                relationService.addRelation(rel)
+                log.info("New relation appeared: " + rel)
             }
 
     private fun processDisappeared(disappeared: List<Int>) =
-            disappeared.map(this::createRelation).forEach {
-                relationService.removeRelation(it)
-                log.info("Relation disappeared: " + it)
+            disappeared.forEach { id ->
+                val rel = createRelation(id)
+                relationService.removeRelation(rel)
+                log.info("Relation disappeared: " + rel)
             }
 
     private fun createRelation(targetId: Int) =
