@@ -1,8 +1,8 @@
 package my.maryvkweb.seeker
 
-import my.maryvkweb.LoggerDelegate
 import my.maryvkweb.domain.Relation
 import my.maryvkweb.domain.RelationType
+import my.maryvkweb.getLogger
 import my.maryvkweb.service.RelationService
 import my.maryvkweb.service.VkService
 
@@ -13,7 +13,7 @@ class MarySeekerImpl(
         private val relationService: RelationService
 ) : MarySeeker {
 
-    private val log by LoggerDelegate(MarySeekerImpl::class.java)
+    private val log = getLogger<MarySeekerImpl>()
 
     override fun seek() {
         val curUsers = getCurUsers() ?: return

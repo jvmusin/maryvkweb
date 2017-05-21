@@ -4,9 +4,10 @@ import com.vk.api.sdk.client.VkApiClient
 import com.vk.api.sdk.client.actors.UserActor
 import com.vk.api.sdk.exceptions.ApiException
 import com.vk.api.sdk.exceptions.ClientException
-import my.maryvkweb.LoggerDelegate
+import com.vk.api.sdk.objects.users.UserXtrCounters
 import my.maryvkweb.domain.RelationType
 import my.maryvkweb.domain.User
+import my.maryvkweb.getLogger
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import java.lang.System.currentTimeMillis
@@ -21,7 +22,7 @@ import java.util.concurrent.locks.ReentrantLock
         private val apiCallRange: Int
 ) : VkService {
 
-    private val log by LoggerDelegate(VkServiceImpl::class.java)
+    private val log = getLogger<VkServiceImpl>()
 
     override fun getConnectedIds(userId: Int, relationType: RelationType): List<Int>? {
         val ids = if (relationType === RelationType.FRIEND) getFriendIds(userId) else getFollowerIds(userId)
@@ -65,10 +66,10 @@ import java.util.concurrent.locks.ReentrantLock
     }
 
     private fun getUsersFromVk(ids: List<Int>): List<User>? {
+        fun List<Int>.getVkUsers() = vk.users().get(owner).userIds(map(Any::toString)).execute()
+        fun UserXtrCounters.toUser() = User(id = id, firstName = firstName, lastName = lastName)
         try {
-            val idsStr = ids.map(Any::toString)
-            val vkUsers = executeVkApiCall { vk.users().get(owner).userIds(idsStr).execute() }
-            return vkUsers.map { User(id = it.id, firstName = it.firstName, lastName = it.lastName) }
+            return executeVkApiCall(ids::getVkUsers).map(UserXtrCounters::toUser)
         } catch (e: ApiException) {
             log.warning("Unable to get users: ${e.message}")
             return null
@@ -81,11 +82,11 @@ import java.util.concurrent.locks.ReentrantLock
     private val lastTimeApiUsed = AtomicLong(0)
     private val lock = ReentrantLock(true)
     @Throws(ApiException::class, ClientException::class)
-    private fun <T> executeVkApiCall(func: () -> T): T {
+    private fun <T> executeVkApiCall(vkApiCall: () -> T): T {
         lock.lock()
         while (currentTimeMillis() - lastTimeApiUsed.get() < apiCallRange);
         try {
-            return func()
+            return vkApiCall()
         } finally {
             lastTimeApiUsed.set(currentTimeMillis())
             lock.unlock()

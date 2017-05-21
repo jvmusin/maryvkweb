@@ -1,7 +1,7 @@
 package my.maryvkweb.service
 
-import my.maryvkweb.LoggerDelegate
 import my.maryvkweb.domain.RegisteredSeeker
+import my.maryvkweb.getLogger
 import my.maryvkweb.repository.RegisteredSeekerRepository
 import org.springframework.stereotype.Service
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
         private val registeredSeekerRepository: RegisteredSeekerRepository
 ) : RegisteredSeekerService {
 
-    private val log by LoggerDelegate(RegisteredSeekerServiceImpl::class.java)
+    private val log = getLogger<RegisteredSeekerServiceImpl>()
 
     override fun register(targetId: Int) {
         val seeker = RegisteredSeeker(targetId = targetId)

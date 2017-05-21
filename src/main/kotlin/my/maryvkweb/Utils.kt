@@ -1,9 +1,8 @@
 package my.maryvkweb
 
 import java.util.logging.Logger
-import kotlin.properties.ReadOnlyProperty
-import kotlin.reflect.KProperty
 
-class LoggerDelegate(val clazz: Class<*>) : ReadOnlyProperty<Any?, Logger> {
-    override fun getValue(thisRef: Any?, property: KProperty<*>): Logger = Logger.getLogger(clazz.name)
+inline fun <reified T> getLogger() = Logger.getLogger(T::class.java.name)
+inline fun <T1> Iterable<T1>.forEach(action: (T1) -> Any?): Unit {
+    for (element in this) action(element)
 }

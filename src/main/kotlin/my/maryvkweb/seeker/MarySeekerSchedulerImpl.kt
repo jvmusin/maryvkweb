@@ -1,6 +1,6 @@
 package my.maryvkweb.seeker
 
-import my.maryvkweb.LoggerDelegate
+import my.maryvkweb.getLogger
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler
 import org.springframework.stereotype.Service
@@ -11,7 +11,7 @@ import java.util.concurrent.ScheduledFuture
         private val marySeekerFactory: MarySeekerFactory
 ) : MarySeekerScheduler {
 
-    private val log by LoggerDelegate(MarySeekerSchedulerImpl::class.java)
+    private val log = getLogger<MarySeekerSchedulerImpl>()
 
     @Value("\${vk.default-period-to-seek}")
     private val periodToSeek: Long = 0
