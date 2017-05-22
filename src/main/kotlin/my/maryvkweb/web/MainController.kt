@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.*
 ) {
 
     private companion object Views {
-        private val VIEWS_REGISTERED_SEEKERS = "registered-seekers"
-        private val VIEWS_CHANGES = "changes"
-        private val REDIRECT_TO_SEEKERS = "redirect:/seekers"
-        private val REDIRECT_TO_AUTH = "redirect:/getAuth"
+        private const val VIEWS_REGISTERED_SEEKERS = "registered-seekers"
+        private const val VIEWS_CHANGES = "changes"
+        private const val REDIRECT_TO_SEEKERS = "redirect:/seekers"
+        private const val REDIRECT_TO_AUTH = "redirect:/getAuth"
     }
 
     @RequestMapping("/")

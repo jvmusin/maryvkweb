@@ -1,7 +1,7 @@
 package my.maryvkweb
 
+import com.vk.api.sdk.client.TransportClient
 import com.vk.api.sdk.client.VkApiClient
-import com.vk.api.sdk.httpclient.HttpTransportClient
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.web.client.RestTemplateBuilder
@@ -18,8 +18,6 @@ import org.thymeleaf.templateresolver.ITemplateResolver
 @EnableScheduling
 @EnableCaching
 open class MaryVkWebApplication {
-    @Bean
-    open fun vkApiClient() = VkApiClient(HttpTransportClient.getInstance())
 
     @Bean
     open fun templateEngine(templateResolver: ITemplateResolver): TemplateEngine {
@@ -30,9 +28,11 @@ open class MaryVkWebApplication {
     }
 
     @Bean
-    open fun restTemplate(restTemplateBuilder: RestTemplateBuilder): RestTemplate {
-        return restTemplateBuilder.build()
-    }
+    open fun restTemplate(restTemplateBuilder: RestTemplateBuilder): RestTemplate
+            = restTemplateBuilder.build()
+
+    @Bean
+    open fun vkApiClient(transportClient: TransportClient) = VkApiClient(transportClient)
 }
 
 fun main(args: Array<String>) {
