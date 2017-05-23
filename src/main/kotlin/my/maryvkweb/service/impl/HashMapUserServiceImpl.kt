@@ -1,6 +1,7 @@
-package my.maryvkweb.service
+package my.maryvkweb.service.impl
 
 import my.maryvkweb.domain.User
+import my.maryvkweb.service.UserService
 import java.util.concurrent.ConcurrentHashMap
 
 class HashMapUserServiceImpl : UserService {

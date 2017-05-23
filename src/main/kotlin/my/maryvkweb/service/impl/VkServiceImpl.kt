@@ -1,4 +1,4 @@
-package my.maryvkweb.service
+package my.maryvkweb.service.impl
 
 import com.vk.api.sdk.client.VkApiClient
 import com.vk.api.sdk.client.actors.UserActor
@@ -8,6 +8,8 @@ import my.maryvkweb.VkProperties
 import my.maryvkweb.domain.RelationType
 import my.maryvkweb.domain.User
 import my.maryvkweb.getLogger
+import my.maryvkweb.service.UserService
+import my.maryvkweb.service.VkService
 import org.springframework.stereotype.Service
 
 @Service("vk") class VkServiceImpl(

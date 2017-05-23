@@ -1,9 +1,9 @@
-package my.maryvkweb.service
+package my.maryvkweb.service.impl
 
 import my.maryvkweb.domain.User
 import my.maryvkweb.repository.UserRepository
+import my.maryvkweb.service.UserService
 import org.springframework.cache.annotation.Cacheable
-import org.springframework.stereotype.Service
 
 open class UserServiceImpl(
         private val userRepository: UserRepository

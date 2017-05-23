@@ -1,7 +1,8 @@
-package my.maryvkweb.service
+package my.maryvkweb.service.impl
 
 import my.maryvkweb.domain.RelationChange
 import my.maryvkweb.repository.RelationChangeRepository
+import my.maryvkweb.service.RelationChangeService
 import org.springframework.stereotype.Service
 
 @Service class RelationChangeServiceImpl(
