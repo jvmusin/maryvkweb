@@ -12,21 +12,20 @@ import java.util.concurrent.locks.ReentrantLock
 
 @Component
 class RestTransportClient(
-        private val vkProperties: VkProperties
+        vkProperties: VkProperties
 ) : TransportClient {
 
     private val client = HttpTransportClient.getInstance()
-
-    private val apiCallDelay
-        get() = vkProperties.apiCallDelay
+    private val apiCallDelay = vkProperties.apiCallDelay
 
     private val lastTimeApiUsed = AtomicLong(0)
     private val lock = ReentrantLock(true)
+
     @Throws(ApiException::class, ClientException::class)
     private fun execute(request: () -> ClientResponse): ClientResponse {
         lock.lock()
         val period = System.currentTimeMillis() - lastTimeApiUsed.get()
-        if (period in 10..apiCallDelay) Thread.sleep(period)
+        if (period < apiCallDelay) Thread.sleep(apiCallDelay - period)
 
         try {
             return request()
