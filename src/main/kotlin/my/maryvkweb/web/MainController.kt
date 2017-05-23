@@ -70,12 +70,12 @@ import org.springframework.web.bind.annotation.*
     }
 
     @RequestMapping("/seekers/register")
-    fun register(@ModelAttribute(value = "newSeeker") newSeeker: RegisteredSeeker): String {
+    fun register(@ModelAttribute newSeeker: RegisteredSeeker): String {
         registeredSeekerService.register(newSeeker.connectedId!!)
         return REDIRECT_TO_SEEKERS
     }
 
-    @RequestMapping("/seekers/{connectedId}/changes")
+    @RequestMapping("/seekers/{targetId}/changes")
     fun changes(model: Model, @PathVariable targetId: Int): String {
         model.addAttribute("changes", relationChangeService.findAllByConnectedIdOrderByTimeDesc(targetId))
         return VIEWS_CHANGES

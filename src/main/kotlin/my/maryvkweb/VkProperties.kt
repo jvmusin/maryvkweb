@@ -22,5 +22,6 @@ data class VkProperties(
         var scope: String = "",
         var responseType: String = "",
         var accessToken: String = "",
-        var ownerId: Int = 0
+        var ownerId: Int = 0,
+        var maxQuerySize: Int = 0
 )

@@ -5,16 +5,22 @@ import my.maryvkweb.repository.UserRepository
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Service
 
-@Service open class UserServiceImpl(
+open class UserServiceImpl(
         private val userRepository: UserRepository
 ) : UserService {
 
-    override fun exists(userId: Int): Boolean = userRepository.existsById(userId)
+    override fun exists(userId: Int): Boolean {
+        return userRepository.findById(userId).isPresent
+    }
 
     @Cacheable(cacheNames = arrayOf("users"), unless = "#result == null")
     override fun find(userId: Int): User? = userRepository.findById(userId).orElse(null)
 
-    override fun saveAll(users: Iterable<User>): List<User> = userRepository.saveAll(users)
+    override fun save(user: User) {
+        userRepository.save(user)
+    }
 
-    override fun save(user: User): User = userRepository.save(user)
+    override fun saveAll(users: Iterable<User>) {
+        userRepository.saveAll(users)
+    }
 }

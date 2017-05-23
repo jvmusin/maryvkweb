@@ -2,6 +2,7 @@ package my.maryvkweb
 
 import com.vk.api.sdk.client.TransportClient
 import com.vk.api.sdk.client.VkApiClient
+import my.maryvkweb.service.HashMapUserServiceImpl
 import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.web.client.RestTemplateBuilder
@@ -33,6 +34,9 @@ open class MaryVkWebApplication {
 
     @Bean
     open fun vkApiClient(transportClient: TransportClient) = VkApiClient(transportClient)
+
+    @Bean
+    fun userService() = HashMapUserServiceImpl()
 }
 
 fun main(args: Array<String>) {

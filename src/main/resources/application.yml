@@ -11,6 +11,7 @@ vk:
   #additional data
   default-period-to-seek: 120000
   api-call-delay: 400
+  max-query-size: 1000
 
 spring:
   jpa:
