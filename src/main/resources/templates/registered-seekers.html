@@ -19,14 +19,14 @@
         </tr>
         </thead>
         <tbody>
-        <!--/*@thymesVar id="seekers" type="my.maryvkweb.seeker.MarySeeker[]"*/-->
+        <!--/*@thymesVar id="seekers" type="my.maryvkweb.web.SeekerStatus[]"*/-->
         <tr th:each="seeker:${seekers}">
-            <td><a href="https://vk.com/iddreams_3004" th:href="${@vk.getUser(seeker.targetId).link()}" th:text="${@vk.getUser(seeker.targetId).fullName()}">iddreams_3004: Mary</a></td>
+            <td><a href="https://vk.com/iddreams_3004" th:href="${seeker.connected.link()}" th:text="${seeker.connected.fullName()}">iddreams_3004: Mary</a></td>
             <td th:text="${seeker.status}">running</td>
-            <td><a href="#" th:href="@{/seekers/__${seeker.targetId}__/__${seeker.changeStateStr()}__}"
+            <td><a href="#" th:href="@{/seekers/__${seeker.connected.id}__/__${seeker.changeStateStr()}__}"
                    th:text="${seeker.changeStateStr()}">stop</a></td>
-            <td><a href="#" th:href="@{/seekers/__${seeker.targetId}__/changes}">changes</a></td>
-            <td><a href="#" th:href="@{/seekers/__${seeker.targetId}__/remove}">remove</a></td>
+            <td><a href="#" th:href="@{/seekers/__${seeker.connected.id}__/changes}">changes</a></td>
+            <td><a href="#" th:href="@{/seekers/__${seeker.connected.id}__/remove}">remove</a></td>
         </tr>
         </tbody>
     </table>

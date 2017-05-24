@@ -16,6 +16,10 @@ open class UserServiceImpl(
     @Cacheable(cacheNames = arrayOf("users"), unless = "#result == null")
     override fun find(userId: Int): User? = userRepository.findById(userId).orElse(null)
 
+    override fun findAll(ids: List<Int>): List<User> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun save(user: User) {
         userRepository.save(user)
     }

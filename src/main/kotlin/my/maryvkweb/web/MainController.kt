@@ -2,9 +2,11 @@ package my.maryvkweb.web
 
 import my.maryvkweb.VkProperties
 import my.maryvkweb.domain.RegisteredSeeker
+import my.maryvkweb.domain.User
 import my.maryvkweb.seeker.MarySeekerScheduler
 import my.maryvkweb.service.RegisteredSeekerService
 import my.maryvkweb.service.RelationChangeService
+import my.maryvkweb.service.UserService
 import my.maryvkweb.service.VkService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -33,15 +35,17 @@ import org.springframework.web.bind.annotation.*
         if (vkProperties.accessToken.isEmpty())
             return REDIRECT_TO_AUTH
 
-        fun createStatus(connectedId: Int)
-                = SeekerStatus(connectedId, marySeekerScheduler.isRunning(connectedId))
+        val connected = vkService.findUsers(
+                registeredSeekerService.findAll().map { it.connectedId!! })
+        val seekers = connected?.map(this::createStatus)
 
-        val seekers = registeredSeekerService.findAll()
-                .map { seeker -> createStatus(seeker.connectedId!!) }
         model.addAttribute("seekers", seekers)
         model.addAttribute("newSeeker", RegisteredSeeker())
         return VIEWS_REGISTERED_SEEKERS
     }
+
+    private fun createStatus(connected: User)
+            = SeekerStatus(connected, marySeekerScheduler.isRunning(connected.id!!))
 
     @RequestMapping("/seekers/{connectedId}/start")
     fun start(@PathVariable connectedId: Int): String {
@@ -75,20 +79,26 @@ import org.springframework.web.bind.annotation.*
         return REDIRECT_TO_SEEKERS
     }
 
-    @RequestMapping("/seekers/{targetId}/changes")
-    fun changes(model: Model, @PathVariable targetId: Int): String {
-        model.addAttribute("changes", relationChangeService.findAllByConnectedIdOrderByTimeDesc(targetId))
+    @RequestMapping("/seekers/{connectedId}/changes")
+    fun changes(model: Model, @PathVariable connectedId: Int): String {
+        val relationChanges = relationChangeService.findAllByConnectedIdOrderByTimeDesc(connectedId)
+        vkService.findUsers(relationChanges.map { it.targetId!! })  //fetch users
+        model.addAttribute("changes", relationChanges)
+        model.addAttribute("owner", vkService.findUser(vkProperties.ownerId))
         return VIEWS_CHANGES
     }
 
     @RequestMapping("/seekers/allChanges")
     fun allChanges(model: Model): String {
-        model.addAttribute("changes", relationChangeService.findAllOrderByTimeDesc())
+        val relationChanges = relationChangeService.findAllOrderByTimeDesc()
+        vkService.findUsers(relationChanges.map { it.targetId!! })  //fetch users
+        model.addAttribute("changes", relationChanges)
+        model.addAttribute("owner", vkService.findUser(vkProperties.ownerId))
         return VIEWS_CHANGES
     }
 
     @GetMapping("/getAuth")
-    fun tryAuth(): String {
+    fun getAuth(): String {
         return "redirect:" +
                 "https://oauth.vk.com/authorize" +
                 "?client_id=${vkProperties.clientId}" +

@@ -22,13 +22,13 @@ import org.springframework.stereotype.Service
         relationChanges.addAll(changes)
     }
 
-    override fun findAllByConnectedIdOrderByTimeDesc(connectedId: Int): List<RelationChange>
+    override fun findAllByConnectedIdOrderByTimeDesc(connectedId: Int)
             = relationChanges.asSequence()
             .filter { it.connectedId == connectedId }
             .sortedWith(reverseOrder())
             .toList()
 
-    override fun findAllOrderByTimeDesc(): List<RelationChange>
+    override fun findAllOrderByTimeDesc()
             = relationChanges.asSequence()
             .sortedWith(reverseOrder())
             .toList()

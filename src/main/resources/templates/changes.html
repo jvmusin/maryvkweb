@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="owner" type="my.maryvkweb.domain.User"*/-->
 <head>
-    <title th:text="${'Changes for '+__${connectedId}__}">Changes for ploadyfree</title>
+    <title th:text="${'Changes for ' + owner.fullName()}">Changes for ploadyfree</title>
 </head>
 <body>
 <div>
-    <h1 th:text="${'Changes for '+__${connectedId}__}">Changes for ploadyfree</h1>
+    <h1 th:text="${'Changes for ' + owner.fullName()}">Changes for ploadyfree</h1>
 </div>
 
 <table border="1" cellpadding="4" cellspacing="4">
@@ -20,12 +21,12 @@
     </tr>
     </thead>
     <tbody>
-    <!--/*@thymesVar id="contests" type="my.maryvkweb.domain.RelationChange[]"*/-->
+    <!--/*@thymesVar id="changes" type="my.maryvkweb.domain.RelationChange[]"*/-->
     <tr th:each="change:${changes}">
         <td th:text="${change.id}">1</td>
         <td th:text="${#temporals.format(change.time,'dd-MM-yyyy HH:mm:ss')}">1 November 2014 11:10</td>
-        <td><a href="https://vk.com/ploadyfree" th:href="${@vk.getUser(change.connectedId).link()}" th:text="${@vk.getUser(change.connectedId).fullName()}">ploadyfree</a></td>
-        <td><a href="https://vk.com/iddreams_3004" th:href="${@vk.getUser(change.targetId).link()}" th:text="${@vk.getUser(change.targetId).fullName()}">iddreams_3004</a></td>
+        <td><a href="https://vk.com/ploadyfree" th:href="${@vk.findUser(change.connectedId).link()}" th:text="${@vk.findUser(change.connectedId).fullName()}">ploadyfree</a></td>
+        <td><a href="https://vk.com/iddreams_3004" th:href="${@vk.findUser(change.targetId).link()}" th:text="${@vk.findUser(change.targetId).fullName()}">iddreams_3004</a></td>
         <td th:text="${change.relationType}">FRIEND</td>
         <td th:text="${change.isAppeared() ? 'appeared' : 'disappeared'}">appeared</td>
     </tr>

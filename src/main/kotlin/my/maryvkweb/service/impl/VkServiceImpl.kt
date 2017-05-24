@@ -72,7 +72,13 @@ import org.springframework.stereotype.Service
         return true
     }
 
-    private fun getUsersFromVk(ids: List<Int>): List<User>? {
+    override fun findUsers(ids: List<Int>): List<User>? {
+        tryUpdateUsers(ids)
+        val users = userService.findAll(ids)
+        return if (users.size != ids.size) null else users
+    }
+
+    fun getUsersFromVk(ids: List<Int>): List<User>? {
         try {
             return (0..ids.size - 1 step maxQuerySize).flatMap { from ->
                 val to = Math.min(from + maxQuerySize, ids.size)
@@ -90,7 +96,7 @@ import org.springframework.stereotype.Service
         }
     }
 
-    override fun getUser(userId: Int): User? {
+    override fun findUser(userId: Int): User? {
         tryUpdateUsers(listOf(userId))
         return userService.find(userId)
     }

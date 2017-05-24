@@ -16,6 +16,10 @@ class HashMapUserServiceImpl : UserService {
         return repository[userId]
     }
 
+    override fun findAll(ids: List<Int>): List<User> {
+        return ids.mapNotNull { repository[it] }
+    }
+
     override fun save(user: User) {
         repository[user.id!!] = user
     }
