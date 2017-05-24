@@ -9,16 +9,27 @@ import org.springframework.stereotype.Service
         private val relationChangeRepository: RelationChangeRepository
 ) : RelationChangeService {
 
-    override fun registerChange(relationChange: RelationChange): RelationChange
-            = relationChangeRepository.saveAndFlush(relationChange)
+    private val relationChanges: MutableList<RelationChange> by lazy { relationChangeRepository.findAll() }
+
+    override fun registerChange(relationChange: RelationChange): RelationChange {
+        val result = relationChangeRepository.saveAndFlush(relationChange)
+        relationChanges.add(result)
+        return result
+    }
 
     override fun registerChanges(changes: List<RelationChange>) {
         relationChangeRepository.saveAll(changes)
+        relationChanges.addAll(changes)
     }
 
     override fun findAllByConnectedIdOrderByTimeDesc(connectedId: Int): List<RelationChange>
-            = relationChangeRepository.findAllByConnectedIdOrderByTimeDesc(connectedId)
+            = relationChanges.asSequence()
+            .filter { it.connectedId == connectedId }
+            .sortedWith(reverseOrder())
+            .toList()
 
     override fun findAllOrderByTimeDesc(): List<RelationChange>
-            = relationChangeRepository.findAllByOrderByTimeDesc()
+            = relationChanges.asSequence()
+            .sortedWith(reverseOrder())
+            .toList()
 }

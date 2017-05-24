@@ -5,7 +5,7 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.Id
 
-@Entity data class RelationChange(
+@Entity data class RelationChange (
         @Id @GeneratedValue
         var id: Long? = null,
 
@@ -15,4 +15,15 @@ import javax.persistence.Id
 
         var relationType: RelationType? = null,
         var isAppeared: Boolean? = null
-)
+): Comparable<RelationChange> {
+
+    companion object {
+        val comparator: Comparator<RelationChange> = Comparator
+                .comparing(RelationChange::time)
+                .thenComparingLong { r -> r.id!! }
+    }
+
+    override fun compareTo(other: RelationChange): Int {
+        return comparator.compare(this, other)
+    }
+}

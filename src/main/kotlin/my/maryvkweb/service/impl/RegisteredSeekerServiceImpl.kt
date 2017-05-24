@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service
 
     private val log = getLogger<RegisteredSeekerServiceImpl>()
 
-    private val registeredSeekers: MutableList<RegisteredSeeker> by lazy { ArrayList<RegisteredSeeker>() }
+    private val registeredSeekers: MutableList<RegisteredSeeker> by lazy { registeredSeekerRepository.findAll() }
 
     override fun register(connectedId: Int) {
         val seeker = RegisteredSeeker(connectedId = connectedId)
