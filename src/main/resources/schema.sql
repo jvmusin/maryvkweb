@@ -23,10 +23,3 @@ create table if not exists relation_change(
 	relation_type int not null,
 	is_appeared bit not null
 );
-
-create table if not exists user(
-	id int not null
-		primary key,
-	first_name varchar(255) not null,
-	last_name varchar(255) not null
-);
