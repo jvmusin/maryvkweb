@@ -7,7 +7,8 @@ import com.vk.api.sdk.exceptions.ClientException
 import com.vk.api.sdk.httpclient.HttpTransportClient
 import org.springframework.stereotype.Component
 import java.io.File
-import java.util.concurrent.atomic.AtomicLong
+import java.lang.System.currentTimeMillis
+import java.util.*
 import java.util.concurrent.locks.ReentrantLock
 
 @Component
@@ -15,25 +16,38 @@ class RestTransportClient(
         vkProperties: VkProperties
 ) : TransportClient {
 
-    private val client = HttpTransportClient.getInstance()
-    private val apiCallDelay = vkProperties.apiCallDelay
+    private val ONE_SECOND_MILLIS = 1000L
 
-    private val lastTimeApiUsed = AtomicLong(0)
+    private val client = HttpTransportClient.getInstance()
+    private val maxQueriesPerSecond = vkProperties.maxQueriesPerSecond
+
     private val lock = ReentrantLock(true)
+    private val usedTimes = ArrayDeque<Long>()
 
     @Throws(ApiException::class, ClientException::class)
     private fun execute(request: () -> ClientResponse): ClientResponse {
         lock.lock()
-        val period = System.currentTimeMillis() - lastTimeApiUsed.get()
-        if (period < apiCallDelay) Thread.sleep(apiCallDelay - period)
+
+        while (timeSinceFirstRequest() > ONE_SECOND_MILLIS)
+            usedTimes.pollFirst()
+
+        if (usedTimes.size == maxQueriesPerSecond) {
+            val toWait = ONE_SECOND_MILLIS - timeSinceFirstRequest()
+            if (toWait > 0)     //if garbage collection started, it may be < 0
+                Thread.sleep(toWait)
+            usedTimes.pollFirst()
+        }
 
         try {
             return request()
         } finally {
-            lastTimeApiUsed.set(System.currentTimeMillis())
+            //set used time here to to requests more safely
+            usedTimes.addLast(currentTimeMillis())
             lock.unlock()
         }
     }
+
+    private fun timeSinceFirstRequest() = if (usedTimes.isEmpty()) ONE_SECOND_MILLIS else currentTimeMillis() - usedTimes.peekFirst()
 
     override fun post(url: String?, body: String?): ClientResponse {
         return execute { client.post(url, body) }

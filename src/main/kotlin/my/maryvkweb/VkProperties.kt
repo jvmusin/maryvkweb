@@ -15,13 +15,14 @@ data class VkProperties(
         //additional data
         var defaultPeriodToSeek: Long = 0,
         var apiCallDelay: Long = 0,
+        var maxQuerySize: Int = 0,
+        var maxQueriesPerSecond : Int = 0,
 
         //auth only
         var display: String? = "",
         var redirectUri: String = "",
         var scope: String = "",
         var responseType: String = "",
-        var accessToken: String = "",
         var ownerId: Int = 0,
-        var maxQuerySize: Int = 0
+        var accessToken: String = ""
 )

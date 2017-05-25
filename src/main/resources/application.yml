@@ -10,8 +10,8 @@ vk:
   response-type: code
   #additional data
   default-period-to-seek: 120000
-  api-call-delay: 400
   max-query-size: 1000
+  max_queries-per-second: 3
 
 spring:
   jpa:
