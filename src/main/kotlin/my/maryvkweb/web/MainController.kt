@@ -81,12 +81,6 @@ import org.springframework.web.bind.annotation.*
         return REDIRECT_TO_SEEKERS
     }
 
-    @RequestMapping("/seekers/{connectedId}/register")
-    fun register(@PathVariable connectedId: Int): String {
-        registeredSeekerService.register(connectedId)
-        return REDIRECT_TO_SEEKERS
-    }
-
     @RequestMapping("/seekers/{connectedId}/changes")
     fun changes(model: Model, @PathVariable connectedId: Int): String {
         val relationChanges = relationChangeService.findAllByConnectedIdOrderByTimeDesc(connectedId)
