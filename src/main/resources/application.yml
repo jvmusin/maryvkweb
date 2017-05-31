@@ -9,7 +9,7 @@ vk:
   scope: offline
   response-type: code
   #additional data
-  default-period-to-seek: 120000
+  default-period-to-seek: 10000
   max-query-size: 1000
   max_queries-per-second: 3
 
@@ -25,3 +25,14 @@ spring:
     password: root
 server:
   port: 80
+
+---
+
+spring:
+  profiles: cloud
+  datasource:
+    url: jdbc:mysql://us-cdbr-iron-east-03.cleardb.net
+    username: b0c5799c112ee6
+    password: 7f2fc238
+vk:
+  redirect-uri: http://maryvk.cfapps.io/doAuth
