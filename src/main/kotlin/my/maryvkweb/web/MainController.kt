@@ -55,7 +55,7 @@ import org.springframework.web.bind.annotation.*
     @RequestMapping("/seekers/startAll")
     fun startAll(): String {
         registeredSeekerService.findAll()
-                .forEach { user -> start(user.connectedId!!) }
+                .forEach { seeker -> start(seeker.connectedId!!) }
         return REDIRECT_TO_SEEKERS
     }
 

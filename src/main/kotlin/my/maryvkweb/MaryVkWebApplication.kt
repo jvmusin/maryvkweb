@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.scheduling.annotation.EnableScheduling
 import org.thymeleaf.TemplateEngine
 import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect
-import org.thymeleaf.spring5.SpringTemplateEngine
+import org.thymeleaf.spring4.SpringTemplateEngine
 import org.thymeleaf.templateresolver.ITemplateResolver
 
 @SpringBootApplication

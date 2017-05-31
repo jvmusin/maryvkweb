@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service
     }
 
     override fun registerChanges(changes: List<RelationChange>) {
-        relationChangeRepository.saveAll(changes)
+        relationChangeRepository.save(changes)
         relationChanges.addAll(changes)
     }
 

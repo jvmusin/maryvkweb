@@ -1,4 +1,4 @@
-create table if not exists registered_seeker (
+create table if not exists registered_seeker(
 	id bigint auto_increment
 		primary key,
 	connected_id int not null

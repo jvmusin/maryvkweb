@@ -41,7 +41,7 @@ import java.time.LocalDateTime
 
     override fun addRelations(relations: List<Relation>) {
         relations.forEach { getCachedOrLoad(it).add(it.targetId!!) }
-        relationRepository.saveAll(relations)
+        relationRepository.save(relations)
         relationChangeService.registerChanges(relations.map { it.createRelationChange(isAppeared = true) })
     }
 

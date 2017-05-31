@@ -25,7 +25,7 @@ class RestTransportClient(
     private val usedTimes = ArrayDeque<Long>()
 
     @Throws(ApiException::class, ClientException::class)
-    private fun execute(request: () -> ClientResponse): ClientResponse {
+    private inline fun execute(request: () -> ClientResponse): ClientResponse {
         lock.lock()
 
         while (timeSinceFirstRequest() > ONE_SECOND_MILLIS)
@@ -41,7 +41,7 @@ class RestTransportClient(
         try {
             return request()
         } finally {
-            //set used time here to to requests more safely
+            //set used time after request() to do requests more safely
             usedTimes.addLast(currentTimeMillis())
             lock.unlock()
         }

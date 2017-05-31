@@ -11,7 +11,7 @@ vk:
   #additional data
   default-period-to-seek: 10000
   max-query-size: 1000
-  max_queries-per-second: 3
+  max-queries-per-second: 3
 
 spring:
   jpa:
@@ -25,6 +25,9 @@ spring:
     password: root
 server:
   port: 80
+management:
+  address: localhost
+  port: 9001
 
 ---
 

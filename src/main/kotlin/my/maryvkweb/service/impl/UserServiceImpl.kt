@@ -10,11 +10,11 @@ open class UserServiceImpl(
 ) : UserService {
 
     override fun exists(userId: Int): Boolean {
-        return userRepository.findById(userId).isPresent
+        return userRepository.exists(userId)
     }
 
     @Cacheable(cacheNames = arrayOf("users"), unless = "#result == null")
-    override fun find(userId: Int): User? = userRepository.findById(userId).orElse(null)
+    override fun find(userId: Int): User? = userRepository.findOne(userId)
 
     override fun findAll(ids: List<Int>): List<User> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -25,6 +25,6 @@ open class UserServiceImpl(
     }
 
     override fun saveAll(users: Iterable<User>) {
-        userRepository.saveAll(users)
+        userRepository.save(users)
     }
 }
