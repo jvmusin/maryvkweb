@@ -6,7 +6,6 @@ import my.maryvkweb.domain.User
 import my.maryvkweb.seeker.MarySeekerScheduler
 import my.maryvkweb.service.RegisteredSeekerService
 import my.maryvkweb.service.RelationChangeService
-import my.maryvkweb.service.UserService
 import my.maryvkweb.service.VkService
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
@@ -37,7 +36,7 @@ import org.springframework.web.bind.annotation.*
 
         val connected = vkService.findUsers(
                 registeredSeekerService.findAll().map { it.connectedId!! })
-        val seekers = connected?.map(this::createStatus)
+        val seekers = connected.map(this::createStatus)
 
         model.addAttribute("seekers", seekers)
         model.addAttribute("newSeeker", RegisteredSeeker())

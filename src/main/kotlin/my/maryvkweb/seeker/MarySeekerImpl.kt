@@ -27,7 +27,14 @@ class MarySeekerImpl(
     }
 
     private fun getWasUsers() = relationService.findAllFor(connectedId, relationType)
-    private fun getCurUsers() = vk.getConnectedIds(connectedId, relationType)
+    private fun getCurUsers(): List<Int>? {
+        try {
+            return vk.getConnectedIds(connectedId, relationType)
+        } catch (e: Exception) {
+            log.warning("Unable to get current users for $connectedId: $e")
+            return null
+        }
+    }
 
     private fun processAppeared(appeared: List<Int>) {
         val relations = appeared.map(this::createRelation)
