@@ -9,16 +9,12 @@ open class UserServiceImpl(
         private val userRepository: UserRepository
 ) : UserService {
 
-    override fun exists(userId: Int): Boolean {
-        return userRepository.exists(userId)
-    }
+    override fun exists(userId: Int) = userRepository.exists(userId)
 
     @Cacheable(cacheNames = arrayOf("users"), unless = "#result == null")
     override fun find(userId: Int): User? = userRepository.findOne(userId)
 
-    override fun findAll(ids: List<Int>): List<User> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun findAll(ids: List<Int>): List<User> = userRepository.findAll(ids)
 
     override fun save(user: User) {
         userRepository.save(user)

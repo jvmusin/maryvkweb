@@ -12,23 +12,26 @@ import org.springframework.stereotype.Service
 
     private val log = getLogger<RegisteredSeekerServiceImpl>()
 
-    private val registeredSeekers: MutableList<RegisteredSeeker> by lazy { registeredSeekerRepository.findAll() }
+    private val registeredSeekers: MutableMap<Int, RegisteredSeeker> by lazy {
+        @Suppress("UNCHECKED_CAST")
+        registeredSeekerRepository.findAll().associateBy { it.connectedId } as MutableMap<Int, RegisteredSeeker>
+    }
 
     override fun register(connectedId: Int) {
-        val seeker = RegisteredSeeker(connectedId = connectedId)
+        val seeker = RegisteredSeeker(id = -1, connectedId = connectedId)
         registeredSeekerRepository.saveAndFlush(seeker)
-        registeredSeekers.add(seeker)
+        registeredSeekers.put(connectedId, seeker)
 
         log.info("Registered new seeker: " + seeker)
     }
 
     override fun unregister(connectedId: Int) {
-        registeredSeekers.removeIf { it.connectedId == connectedId }
+        registeredSeekers.remove(connectedId)
         registeredSeekerRepository.deleteByConnectedId(connectedId)
 
-        val seeker = RegisteredSeeker(connectedId = connectedId)
+        val seeker = RegisteredSeeker(connectedId = connectedId, id = -1)
         log.info("Unregistered seeker: " + seeker)
     }
 
-    override fun findAll(): List<RegisteredSeeker> = registeredSeekers
+    override fun findAll(): List<RegisteredSeeker> = registeredSeekers.values.toList()
 }

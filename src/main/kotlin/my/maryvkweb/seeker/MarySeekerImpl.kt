@@ -49,6 +49,7 @@ class MarySeekerImpl(
     }
 
     private fun createRelation(targetId: Int) = Relation(
+            id = -1,
             connectedId = connectedId,
             targetId = targetId,
             relationType = relationType

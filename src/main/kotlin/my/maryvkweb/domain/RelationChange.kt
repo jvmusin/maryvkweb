@@ -7,20 +7,20 @@ import javax.persistence.Id
 
 @Entity data class RelationChange (
         @Id @GeneratedValue
-        var id: Long? = null,
+        val id: Long,
 
-        var time: LocalDateTime? = null,
-        var connectedId: Int? = null,
-        var targetId: Int? = null,
+        val time: LocalDateTime,
+        val connectedId: Int,
+        val targetId: Int,
 
-        var relationType: RelationType? = null,
-        var isAppeared: Boolean? = null
+        val relationType: RelationType,
+        val isAppeared: Boolean
 ): Comparable<RelationChange> {
 
     companion object {
         val comparator: Comparator<RelationChange> = Comparator
                 .comparing(RelationChange::time)
-                .thenComparingLong { r -> r.id!! }
+                .thenComparingLong(RelationChange::id)
     }
 
     override fun compareTo(other: RelationChange): Int {

@@ -44,5 +44,8 @@ import java.util.concurrent.ScheduledFuture
         log.info("Unscheduled seeker for $connectedId")
     }
 
-    override fun isRunning(connectedId: Int): Boolean = scheduledSeekers.containsKey(connectedId)
+    override fun isRunning(connectedId: Int): Boolean {
+        val scheduledFuture = scheduledSeekers[connectedId] ?: return false
+        return !scheduledFuture.isDone
+    }
 }

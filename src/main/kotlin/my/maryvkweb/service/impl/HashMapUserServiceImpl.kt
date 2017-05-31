@@ -8,20 +8,14 @@ class HashMapUserServiceImpl : UserService {
 
     private val repository = ConcurrentHashMap<Int, User>()
 
-    override fun exists(userId: Int): Boolean {
-        return repository.containsKey(userId)
-    }
+    override fun exists(userId: Int): Boolean = repository.containsKey(userId)
 
-    override fun find(userId: Int): User? {
-        return repository[userId]
-    }
+    override fun find(userId: Int): User? = repository[userId]
 
-    override fun findAll(ids: List<Int>): List<User> {
-        return ids.mapNotNull { repository[it] }
-    }
+    override fun findAll(ids: List<Int>): List<User> = ids.mapNotNull(repository::get)
 
     override fun save(user: User) {
-        repository[user.id!!] = user
+        repository[user.id] = user
     }
 
     override fun saveAll(users: Iterable<User>) {

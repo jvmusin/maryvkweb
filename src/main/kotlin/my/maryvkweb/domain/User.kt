@@ -5,10 +5,10 @@ import javax.persistence.Id
 
 @Entity data class User(
         @Id
-        val id: Int? = null,
+        val id: Int,
 
-        val firstName: String? = null,
-        val lastName: String? = null
+        val firstName: String,
+        val lastName: String
 ) {
     fun link() = "http://vk.com/id$id"
     fun fullName() = "$firstName $lastName"
