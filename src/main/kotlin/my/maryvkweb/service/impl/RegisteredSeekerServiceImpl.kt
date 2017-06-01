@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service
         registeredSeekers.remove(connectedId)
         registeredSeekerRepository.deleteByConnectedId(connectedId)
 
-        val seeker = RegisteredSeeker(connectedId = connectedId, id = -1)
+        val seeker = RegisteredSeeker(id = -1, connectedId = connectedId)
         log.info("Unregistered seeker: " + seeker)
     }
 
