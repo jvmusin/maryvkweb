@@ -6,7 +6,7 @@ import javax.persistence.Id
 
 @Entity data class RegisteredSeeker(
         @Id @GeneratedValue
-        val id: Long,
+        var id: Long? = null,
 
-        val connectedId: Int
+        var connectedId: Int? = null
 )

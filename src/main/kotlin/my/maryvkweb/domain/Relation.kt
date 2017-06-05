@@ -6,10 +6,10 @@ import javax.persistence.Id
 
 @Entity data class Relation(
         @Id @GeneratedValue
-        val id: Long,
+        var id: Long? = null,
 
-        val connectedId: Int,
-        val targetId: Int,
+        var connectedId: Int? = null,
+        var targetId: Int? = null,
 
-        val relationType: RelationType
+        var relationType: RelationType? = null
 )

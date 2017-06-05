@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service
     }
 
     override fun register(connectedId: Int) {
-        val seeker = RegisteredSeeker(id = -1, connectedId = connectedId)
+        val seeker = RegisteredSeeker(connectedId = connectedId)
         registeredSeekerRepository.saveAndFlush(seeker)
         registeredSeekers.put(connectedId, seeker)
 
@@ -29,7 +29,7 @@ import org.springframework.stereotype.Service
         registeredSeekers.remove(connectedId)
         registeredSeekerRepository.deleteByConnectedId(connectedId)
 
-        val seeker = RegisteredSeeker(id = -1, connectedId = connectedId)
+        val seeker = RegisteredSeeker(connectedId = connectedId)
         log.info("Unregistered seeker: " + seeker)
     }
 

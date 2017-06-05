@@ -25,39 +25,38 @@ import java.time.LocalDateTime
     }
 
     override fun addRelation(relation: Relation) {
-        getCachedOrLoad(relation).add(relation.targetId)
+        getCachedOrLoad(relation).add(relation.targetId!!)
         relationRepository.saveAndFlush(relation)
         relationChangeService.registerChange(relation.createRelationChange(isAppeared = true))
     }
 
     override fun removeRelation(relation: Relation) {
-        getCachedOrLoad(relation).remove(relation.targetId)
+        getCachedOrLoad(relation).remove(relation.targetId!!)
         relationRepository.deleteByConnectedIdAndTargetIdAndRelationType(
-                connectedId = relation.connectedId,
-                targetId = relation.targetId,
-                relationType = relation.relationType)
+                connectedId = relation.connectedId!!,
+                targetId = relation.targetId!!,
+                relationType = relation.relationType!!)
         relationChangeService.registerChange(relation.createRelationChange(isAppeared = false))
     }
 
     override fun addRelations(relations: List<Relation>) {
-        relations.forEach { getCachedOrLoad(it).add(it.targetId) }
+        relations.forEach { getCachedOrLoad(it).add(it.targetId!!) }
         relationRepository.save(relations)
         relationChangeService.registerChanges(relations.map { it.createRelationChange(isAppeared = true) })
     }
 
     override fun removeRelations(relations: List<Relation>) {
         relations.forEach { relation ->
-            getCachedOrLoad(relation).remove(relation.targetId)
+            getCachedOrLoad(relation).remove(relation.targetId!!)
             relationRepository.deleteByConnectedIdAndTargetIdAndRelationType(//todo: make batch
-                    connectedId = relation.connectedId,
-                    targetId = relation.targetId,
-                    relationType = relation.relationType)
+                    connectedId = relation.connectedId!!,
+                    targetId = relation.targetId!!,
+                    relationType = relation.relationType!!)
         }
         relationChangeService.registerChanges(relations.map { it.createRelationChange(isAppeared = false) })
     }
 
     private fun Relation.createRelationChange(isAppeared: Boolean) = RelationChange(
-            id = -1,
             time = LocalDateTime.now(),
             connectedId = connectedId,
             targetId = targetId,
@@ -77,5 +76,5 @@ import java.time.LocalDateTime
         return cache[key].get() as MutableList<Int>
     }
 
-    private fun getCachedOrLoad(relation: Relation) = getCachedOrLoad(relation.connectedId, relation.relationType)
+    private fun getCachedOrLoad(relation: Relation) = getCachedOrLoad(relation.connectedId!!, relation.relationType!!)
 }

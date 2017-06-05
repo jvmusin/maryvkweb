@@ -36,16 +36,16 @@ import org.springframework.web.bind.annotation.*
             return REDIRECT_TO_AUTH
 
         val connected = vkService.findUsers(
-                registeredSeekerService.findAll().map(RegisteredSeeker::connectedId))
+                registeredSeekerService.findAll().map { it.connectedId!! })
         val seekers = connected.map(this::createStatus)
 
         model.addAttribute("seekers", seekers)
-        model.addAttribute("newSeeker", RegisteredSeeker(-1, -1))
+        model.addAttribute("newSeeker", RegisteredSeeker())
         return VIEWS_REGISTERED_SEEKERS
     }
 
     private fun createStatus(connected: User)
-            = SeekerStatus(connected, marySeekerScheduler.isRunning(connected.id))
+            = SeekerStatus(connected, marySeekerScheduler.isRunning(connected.id!!))
 
     @RequestMapping("/seekers/{connectedId}/start")
     fun start(@PathVariable connectedId: Int): String {
@@ -57,7 +57,7 @@ import org.springframework.web.bind.annotation.*
     fun startAll(): String {
         registeredSeekerService.findAll().asSequence()
                 .map(RegisteredSeeker::connectedId)
-                .forEach { connectedId -> start(connectedId) }
+                .forEach { connectedId -> start(connectedId!!) }
         return REDIRECT_TO_SEEKERS
     }
 
@@ -77,14 +77,14 @@ import org.springframework.web.bind.annotation.*
     @RequestMapping("/seekers/register")
     fun register(@ModelAttribute newSeeker: RegisteredSeeker): String {
         //todo: use another model
-        registeredSeekerService.register(newSeeker.connectedId)
+        registeredSeekerService.register(newSeeker.connectedId!!)
         return REDIRECT_TO_SEEKERS
     }
 
     @RequestMapping("/seekers/{connectedId}/changes")
     fun changes(model: Model, @PathVariable connectedId: Int): String {
         val relationChanges = relationChangeService.findAllByConnectedIdOrderByTimeDesc(connectedId)
-        vkService.findUsers(relationChanges.map(RelationChange::targetId))  //fetch users
+        vkService.findUsers(relationChanges.map { it.targetId!! })  //fetch users
         model.addAttribute("changes", relationChanges)
         model.addAttribute("owner", vkService.findUser(vkProperties.ownerId))
         return VIEWS_CHANGES
@@ -93,7 +93,7 @@ import org.springframework.web.bind.annotation.*
     @RequestMapping("/seekers/allChanges")
     fun allChanges(model: Model): String {
         val relationChanges = relationChangeService.findAllOrderByTimeDesc()
-        vkService.findUsers(relationChanges.map(RelationChange::targetId))  //fetch users
+        vkService.findUsers(relationChanges.map { it.targetId!! })  //fetch users
         model.addAttribute("changes", relationChanges)
         model.addAttribute("owner", vkService.findUser(vkProperties.ownerId))
         return VIEWS_CHANGES
