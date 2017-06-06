@@ -26,19 +26,19 @@ class RestTransportClient(
 
     @Throws(ApiException::class, ClientException::class)
     private inline fun execute(request: () -> ClientResponse): ClientResponse {
-        lock.lock()
-
-        while (timeSinceFirstRequest() > ONE_SECOND_MILLIS)
-            usedTimes.pollFirst()
-
-        if (usedTimes.size == maxQueriesPerSecond) {
-            val toWait = ONE_SECOND_MILLIS - timeSinceFirstRequest()
-            if (toWait > 0)     //if garbage collection started, it may be < 0
-                Thread.sleep(toWait)
-            usedTimes.pollFirst()
-        }
-
         try {
+            lock.lock()
+
+            while (timeSinceFirstRequest() > ONE_SECOND_MILLIS)
+                usedTimes.pollFirst()
+
+            if (usedTimes.size == maxQueriesPerSecond) {
+                val toWait = ONE_SECOND_MILLIS - timeSinceFirstRequest()
+                if (toWait > 0)     //if garbage collection started, it may be < 0
+                    Thread.sleep(toWait)
+                usedTimes.pollFirst()
+            }
+            
             return request()
         } finally {
             //set used time after request() to do requests more safely
