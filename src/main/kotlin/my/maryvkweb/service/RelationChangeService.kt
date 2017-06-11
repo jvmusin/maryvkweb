@@ -6,6 +6,6 @@ interface RelationChangeService {
     fun registerChange(relationChange: RelationChange): RelationChange
     fun registerChanges(changes: List<RelationChange>)
 
-    fun findAllByConnectedIdOrderByTimeDesc(connectedId: Int): List<RelationChange>
-    fun findAllOrderByTimeDesc(): List<RelationChange>
+    fun findAllByConnectedId(connectedId: Int): List<RelationChange>
+    fun findAllSortedByIdDesc(): List<RelationChange>
 }

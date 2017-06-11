@@ -2,7 +2,6 @@ package my.maryvkweb.web
 
 import my.maryvkweb.VkProperties
 import my.maryvkweb.domain.RegisteredSeeker
-import my.maryvkweb.domain.RelationChange
 import my.maryvkweb.domain.User
 import my.maryvkweb.seeker.MarySeekerScheduler
 import my.maryvkweb.service.RegisteredSeekerService
@@ -83,7 +82,7 @@ import org.springframework.web.bind.annotation.*
 
     @RequestMapping("/seekers/{connectedId}/changes")
     fun changes(model: Model, @PathVariable connectedId: Int): String {
-        val relationChanges = relationChangeService.findAllByConnectedIdOrderByTimeDesc(connectedId)
+        val relationChanges = relationChangeService.findAllByConnectedId(connectedId)
         vkService.findUsers(relationChanges.map { it.targetId!! })  //fetch users
         model.addAttribute("changes", relationChanges)
         model.addAttribute("owner", vkService.findUser(vkProperties.ownerId))
@@ -92,7 +91,7 @@ import org.springframework.web.bind.annotation.*
 
     @RequestMapping("/seekers/allChanges")
     fun allChanges(model: Model): String {
-        val relationChanges = relationChangeService.findAllOrderByTimeDesc()
+        val relationChanges = relationChangeService.findAllSortedByIdDesc()
         vkService.findUsers(relationChanges.map { it.targetId!! })  //fetch users
         model.addAttribute("changes", relationChanges)
         model.addAttribute("owner", vkService.findUser(vkProperties.ownerId))

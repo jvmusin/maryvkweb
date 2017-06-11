@@ -15,15 +15,4 @@ import javax.persistence.Id
 
         var relationType: RelationType? = null,
         var isAppeared: Boolean? = null
-): Comparable<RelationChange> {
-
-    companion object {
-        val comparator: Comparator<RelationChange> = Comparator
-                .comparing(RelationChange::time)
-                .thenComparingLong { it.id!! }
-    }
-
-    override fun compareTo(other: RelationChange): Int {
-        return comparator.compare(this, other)
-    }
-}
+)

@@ -1,7 +1,7 @@
 package my.maryvkweb.service.impl
 
 import my.maryvkweb.domain.User
-import my.maryvkweb.repository.UserRepository
+import my.maryvkweb.service.repository.UserRepository
 import my.maryvkweb.service.UserService
 import org.springframework.cache.annotation.Cacheable
 

@@ -4,7 +4,7 @@ import my.maryvkweb.domain.Relation
 import my.maryvkweb.domain.RelationChange
 import my.maryvkweb.domain.RelationType
 import my.maryvkweb.getCache
-import my.maryvkweb.repository.RelationRepository
+import my.maryvkweb.service.repository.RelationRepository
 import my.maryvkweb.service.RelationChangeService
 import my.maryvkweb.service.RelationService
 import my.maryvkweb.set

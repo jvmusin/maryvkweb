@@ -2,7 +2,7 @@ package my.maryvkweb.service.impl
 
 import my.maryvkweb.domain.RegisteredSeeker
 import my.maryvkweb.getLogger
-import my.maryvkweb.repository.RegisteredSeekerRepository
+import my.maryvkweb.service.repository.RegisteredSeekerRepository
 import my.maryvkweb.service.RegisteredSeekerService
 import org.springframework.stereotype.Service
 

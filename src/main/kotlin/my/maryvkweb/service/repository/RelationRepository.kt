@@ -1,4 +1,4 @@
-package my.maryvkweb.repository
+package my.maryvkweb.service.repository
 
 import my.maryvkweb.domain.Relation
 import my.maryvkweb.domain.RelationType

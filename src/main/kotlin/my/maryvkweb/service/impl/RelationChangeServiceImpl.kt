@@ -1,7 +1,7 @@
 package my.maryvkweb.service.impl
 
 import my.maryvkweb.domain.RelationChange
-import my.maryvkweb.repository.RelationChangeRepository
+import my.maryvkweb.service.repository.RelationChangeRepository
 import my.maryvkweb.service.RelationChangeService
 import org.springframework.stereotype.Service
 
@@ -22,11 +22,12 @@ import org.springframework.stereotype.Service
         relationChanges.addAll(changes)
     }
 
-    override fun findAllByConnectedIdOrderByTimeDesc(connectedId: Int)
+    override fun findAllByConnectedId(connectedId: Int)
             = relationChanges
             .filter { it.connectedId == connectedId }
-            .sortedWith(reverseOrder())
 
-    override fun findAllOrderByTimeDesc()
-            = relationChanges.sortedByDescending { it.time }
+    override fun findAllSortedByIdDesc(): List<RelationChange> {
+        return relationChanges.sortedByDescending { it.id!! }
+    }
+
 }
