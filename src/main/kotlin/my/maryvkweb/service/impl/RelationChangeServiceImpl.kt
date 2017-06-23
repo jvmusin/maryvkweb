@@ -26,8 +26,13 @@ import org.springframework.stereotype.Service
             = relationChanges
             .filter { it.connectedId == connectedId }
 
-    override fun findAllSortedByIdDesc(): List<RelationChange> {
-        return relationChanges.sortedByDescending { it.id!! }
-    }
+    override fun findAllByConnectedIdOrderByIdDesc(connectedId: Int)
+            = relationChanges
+            .filter { it.connectedId == connectedId }
+            .sortedByDescending { it.id }
+
+    override fun findAllOrderByIdDesc()
+            = relationChanges
+            .sortedByDescending { it.id!! }
 
 }

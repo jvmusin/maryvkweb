@@ -82,7 +82,7 @@ import org.springframework.web.bind.annotation.*
 
     @RequestMapping("/seekers/{connectedId}/changes")
     fun changes(model: Model, @PathVariable connectedId: Int): String {
-        val relationChanges = relationChangeService.findAllByConnectedId(connectedId)
+        val relationChanges = relationChangeService.findAllByConnectedIdOrderByIdDesc(connectedId)
         vkService.findUsers(relationChanges.map { it.targetId!! })  //fetch users
         model.addAttribute("changes", relationChanges)
         model.addAttribute("owner", vkService.findUser(vkProperties.ownerId))
@@ -91,7 +91,7 @@ import org.springframework.web.bind.annotation.*
 
     @RequestMapping("/seekers/allChanges")
     fun allChanges(model: Model): String {
-        val relationChanges = relationChangeService.findAllSortedByIdDesc()
+        val relationChanges = relationChangeService.findAllOrderByIdDesc()
         vkService.findUsers(relationChanges.map { it.targetId!! })  //fetch users
         model.addAttribute("changes", relationChanges)
         model.addAttribute("owner", vkService.findUser(vkProperties.ownerId))

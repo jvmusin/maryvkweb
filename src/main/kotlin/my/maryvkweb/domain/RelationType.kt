@@ -1,6 +1,6 @@
 package my.maryvkweb.domain
 
-enum class RelationType(val id: kotlin.Int) {
+enum class RelationType(val id: Int) {
     FRIEND(0),
     FOLLOWER(1);
 
